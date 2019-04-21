@@ -8,18 +8,14 @@ require_relative './carriage'
 require_relative './passenger_carriage' 
 require_relative './cargo_carriage' 
 
-
 class MainMenu
 
   attr_accessor :stations, :trains, :routes
 
   def initialize
-    @stations = []
-    @trains = []
-    @routes = [] # хранит обьекты маршрут из new_route
-    @routes_list = {} # хранит хэш имя маршрута - маршрут
-    @routes_trains = {} # хранит хэш поезд - маршрут
-
+    @stations = []  # хранит обьекты станции @stations << station
+    @trains = []    # хранит обьекты поезда @trains << new_train
+    @routes = []    # хранит обьекты маршрут из new_route
   end
 
   def create_new_station # для пункта 1, создание станции
@@ -31,7 +27,7 @@ class MainMenu
   
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
-    @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.display}"}
+    @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name}"}
     @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages"}
   end
   
@@ -53,91 +49,87 @@ class MainMenu
   end
 
   def create_change_route # для пункта 3 - создание, изменение маршрута. 
-    puts "@routes = #{@routes}"
-   
+    @routes.each_with_index { |route_list, i| puts "Existing route #{i+1} is #{route_list.display_route}" } if @routes.size > 0 # выводим имеющиеся маршруты
     print "Enter start station of route: "
     start_station = gets.chomp
     print "Enter last station of route: "
-    last_station = gets.chomp
-    new_route = Route.new(start_station, last_station) # создаем на основе класса роут новый маршрут.
-    
-    @routes << new_route # записываем его в массив. 
+    end_station = gets.chomp
+    new_route = Route.new(start_station, end_station) # создаем на основе класса роут новый маршрут.
+    @routes << new_route # записываем его в массив маршрутов 
     puts "@routes = #{@routes}"
-    puts "@routes.route_list = #{@routes.display}"
-    puts  new_route.start_station
+    puts "@routes.route_list = #{new_route.display_route}"
+    puts new_route.start_station
     puts new_route.last_station
-    @routes.each_with_index { |route, i| @routes_list[i+1] = route.display }
-    #@routes.each_with_index { |route, i| puts "#{i+1} - #{@route_list.display}"} 
+    #@routes.each_with_index { |route, i| route_list[i+1] = route.display_route }
+    #@routes.each_with_index { |route, i| puts "#{i+1} - #{@route_display}"} 
     # проверка
+  
     loop do # подменю для добавления, удаления, отображения маршрута (методы из роут)
       puts "Continue with route? " 
-      puts "Type '1' for add substation."
-      puts "Type '2' for delete substation"
-      puts "Type '3' for display full route"
-      puts "Type '0' for return to MainMenu"
+      puts "Type 'add' for add substation."
+      puts "Type 'del' for delete substation"
+      puts "Type 'display' for display full route"
+      puts "Type 'exit' for return to MainMenu"
       choice_route = gets.chomp
-      break if choice_route == '0'
-      case 
-        when choice_route == '1'
+      break if choice_route == "exit"
+      case choice_route
+        when "add"
           print "Enter name of station before: "
           before_station = gets.chomp
           print "Enter substation : "
           substation = gets.chomp
           new_route.add_station_after(before_station, substation)
-        when choice_route == '2'
-          puts new_route.display
+        when "del"
+          puts new_route.display_route
           print "Enter name of station to delete: "
           del_station = gets.chomp
           new_route.del_station_from_route(del_station)
-          when choice_route == '3'
-          @routes.each_with_index { |route, i| puts "#{i+1} - #{route.display}"}
-          @routes.each_with_index { |route, i| @routes_list[i+1] = route.display}
-          puts @routes
+        when "display"
+          @routes.each_with_index { |route, i| puts "Route #{i+1} - #{route.route_name}"}
+          #@routes.each_with_index { |route, i| @routes_list[i+1] = route.display_route}
+          #puts @routes
       end 
     end
   end
   
-  
+   def set_routes_trains # для пункта 4 - назначаем маршрут поезду
+    puts "Enter number of train to assign route: " 
+    assign_train = gets.chomp
+    puts "Enter route name (first station-last station) for assign to train: "
+    #puts @routes_list
+    @routes.each_with_index { |route, i| puts "Route #{i+1} - #{route.route_name}"}
+    assign_route = gets.chomp
+    
+    selected_train = find_train_number(assign_train) # ищем поезд по номеру
+    selected_route = find_route_by_name(assign_route) # ищем маршрут по номеру
+
+    puts "Selected train = #{selected_train}"
+    puts "Selected route = #{selected_route}"
+
+    selected_train.train_on_route(assign_train, selected_route.route_list)
+    puts "route (position list) of train is #{ selected_train.position}"
+    puts "position start = #{selected_train.position[0]}"
+    puts "position end = #{selected_train.position[-1]}"
+  end
 
   def move_train_on_assigned_route
     puts "Enter train number to move"
     number_train = gets.chomp
-    assigned_route = @routes_trains[number_train]
-=begin проверка
-    puts "assigned_route = #{assigned_route}"
-    puts "assigned_route[0] = #{assigned_route[0]}"
-    puts "assigned_route[-1] = #{assigned_route[-1]}"
-=end
-    puts "Train on station: #{assigned_route[@train_pos_now]}" 
-    puts "Enter 'next' for move train to next station or 'prev' for move train to previos station: "
-    choice = gets.chomp
-      if choice == "next"
-          if @train_pos_now != -1
-          @train_pos_now += 1
-          puts "Location of train is #{ assigned_route[@train_pos_now]}"
-          next_stat = assigned_route[@train_pos_now+1] #смотрим следующую станцию
-          prev_stat = assigned_route[@train_pos_now-1] #смотрим предыдущую станцию
-          if next_stat 
-            puts "Next station is #{next_stat}"
-            puts "Previous station is #{prev_stat}" 
-          else
-            puts "Train at the end of route!"
-          end    
-        end
-        if choice == "prev"
-          if @train_pos_now > 0 
-            @train_pos_now -= 1
-            puts "Location of train is #{ assigned_route[@train_pos_now]}"
-            next_stat = assigned_route[@train_pos_now+1] #смотрим следующую станцию
-            prev_stat = assigned_route[@train_pos_now-1] #смотрим предыдущую станцию
-            puts "Next station is #{next_stat}" if next_stat
-            puts "Previos station is #{prev_stat}" if train_pos_now > 0 
-          else
-            puts "Train at the start of route!"
-          end    
-        end
-      end  
+    
+    move_train = find_train_number(number_train)
+    loop do
+      puts "Enter 'next' for move train to next station or 'prev' for move train to previos station, or Enter 'stop' for stop move: "
+      choice_move = gets.chomp
+      break if choice_move == "stop"
+      if choice_move == "next"
+        move_train.train_go_to_next(number_train, move_train.position)
+      end
+      if choice_move == "prev"
+        move_train.train_go_to_previous(number_train, move_train.position)
+      end
+    end
   end
+ 
 
   def carriage_add_to_train # для пункта 5 - добавляем вагон, методы создать вагон и добавить вагон описаны в трэйн (в нем сравнить)
     puts "Enter number of train to add carriage"
@@ -166,29 +158,18 @@ class MainMenu
      
   def find_train_number(number_train) # вспомогательный метод, часто
     @trains.find { |train| train.number == number_train }
+    #puts @trains.find { |train| train.number == number_train } 
+    
   end
   
   def find_station(station_name) # ищем станцию по имени
-    @stations.find { |station| station.name == station_name }
+    @stations.find { |station| station.station_name == station_name }
+  end
+  
+  def find_route_by_name(route_name)
+    @routes.find { |route| route.route_name == route_name }
   end
 
-  def set_routes_trains # для пункта 4 - назначаем маршрут поезду
-    puts "Select route for assign to train: "
-    puts @routes_list
-    select_route = gets.chomp.to_i
-    puts "For enter number of train: " 
-    number_train = gets.chomp
-    puts @routes_list[select_route] # из списка по имени маршрута отображаем выбранный маршрут (для более понятного представления пользователю) 
-    @routes_trains[number_train] = @routes_list[select_route] # составляем хэш поезд: маршрут
-    puts @routes_trains # итого имеем хэш - номер поезда: маршрут. Нужно добавить при обработке новой станции на маршруте поиск маршрута
-    #теперь для пунка 7 надо вернуть сопоставление, и поставить поезд на 1 станцию маршрута
-    @routes_list[select_route]
-    assigned_route = @routes_trains[number_train] # присваем массиву маршрут поезда
-    puts "Assigned route is #{assigned_route}" # проверяем
-    @train_pos_now = 0 # устанавливаем переменную на первую станцию
-    puts "@routes = #{@routes}"
-    puts "Train on station: #{@route_list[@train_pos_now]} " 
-  end
 
   def list # список пунктов меню с методами, определенными выше
     loop do

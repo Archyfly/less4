@@ -10,7 +10,7 @@ class Route
 
   def display_route
     "route = #{@route_list}"
-    puts "route = #{@route_list}"
+    #puts "route = #{@route_list}"
     @route_list
   end
 
@@ -33,11 +33,12 @@ class Route
 
   def route_name # для определения маршрута по имени в формате first-last
     @name = route_list.first + "-" + route_list.last
-    puts "name = #{@name}"
+    #puts "name = #{@name}"
   end
 
 end
 
+=begin
 route1 = Route.new('Irkutsk', 'Moscow')
 puts route1
 route1.display_route
@@ -50,4 +51,4 @@ route1.display_route
 route1.del_station_from_route('Kazan')
 route1.display_route
 route1.route_name
-
+=end
