@@ -4,6 +4,7 @@ class Train
     @number = number # Номер поезда
     @train_type = train_type # Тип поезда
     @speed = speed # Скорость поезда
+    @position = [] # для движения по маршруту
     @train_pos_now = train_pos_now # хранение текущей позиции
     @carriages_in_train = [] # массив получаемый из вагончиков
     @carriage_count = 0 # более понятная переменная для числа вагончиков

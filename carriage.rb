@@ -11,13 +11,7 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
   def initialize
     @type_carriage = 'pass'
     @places = 46
-  end
-  
-  private # переопределение количества мест доступно только внутри класса
-
-  def change_places
-    @places = 20
-  end
+   end
 end
 
 class CargoCarriage < Carriage # грузовой вагон - потомок класса вагон
@@ -25,12 +19,6 @@ class CargoCarriage < Carriage # грузовой вагон - потомок к
     @type_carriage = 'cargo'
     @places = 30 
    end
-
-  private # переопределение количества мест доступно только внутри класса
-  
-  def change_places
-    @places = 15
-  end
 end
 
 

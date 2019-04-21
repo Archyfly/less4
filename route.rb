@@ -35,6 +35,7 @@ class Route
     @route_name = route_name
   end
 
+
   def name # для определения маршрута по имени в формате first-last
     @name = route_list.first + "-" + route_list.last
     puts "name = #{@name}"

@@ -11,9 +11,9 @@ class MainMenu
   attr_accessor :stations, :trains, :routes
 
   def initialize
-    @stations = [] # хранит станции
-    @trains = [] # хранит поезда
-    @routes = [] # хранит маршрут 
+    @stations = []
+    @trains = []
+    @routes = [] # хранит обьекты маршрут из new_route
     @routes_list = {} # хранит хэш имя маршрута - маршрут
     @routes_trains = {} # хранит хэш поезд - маршрут
 
@@ -90,7 +90,7 @@ class MainMenu
           print "Enter name of station to delete: "
           del_station = gets.chomp
           new_route.del_station_from_route(del_station)
-        when choice_route == '3'
+          when choice_route == '3'
           @routes.each_with_index { |route, i| puts "#{i+1} - #{route.display}"}
           @routes.each_with_index { |route, i| @routes_list[i+1] = route.display}
           puts @routes
@@ -98,10 +98,12 @@ class MainMenu
     end
   end
   
-  def move_train_on_assigned_route # для пункта 7 - движение поезда по маршруту
+  
+
+  def move_train_on_assigned_route
     puts "Enter train number to move"
     number_train = gets.chomp
-    assigned_route = @routes_trains[number_train] # считывание маршрута из хэша поезд -> маршрут
+    assigned_route = @routes_trains[number_train]
 =begin проверка
     puts "assigned_route = #{assigned_route}"
     puts "assigned_route[0] = #{assigned_route[0]}"
@@ -171,22 +173,22 @@ class MainMenu
     @stations.find { |station| station.name == station_name }
   end
 
-  def set_routes_trains # для пункта 4 - назначаем маршрут поезду
-    puts "Select route for assign to train: "
-    puts @routes_list 
-    select_route = gets.chomp.to_i
-    puts "For enter number of train: " 
-    number_train = gets.chomp
-    puts @routes_list[select_route] # из списка по имени маршрута отображаем выбранный маршрут (для более понятного представления пользователю) 
-    @routes_trains[number_train] = @routes_list[select_route] # составляем хэш поезд: маршрут
-    puts @routes_trains # итого имеем хэш - номер поезда: маршрут. Нужно добавить при обработке новой станции на маршруте поиск маршрута
-    #теперь для пунка 7 надо вернуть сопоставление, и поставить поезд на 1 станцию маршрута
-    @routes_list[select_route]
-    assigned_route = @routes_trains[number_train] # присваем массиву маршрут поезда
-    puts "Assigned route is #{assigned_route}" # проверяем
-    @train_pos_now = 0 # устанавливаем переменную на первую станцию
-    puts "Train on station: #{@train_pos_now}" 
-  end
+    def set_routes_trains # для пункта 4 - назначаем маршрут поезду
+      puts "Select route for assign to train: "
+      puts @routes_list
+      select_route = gets.chomp.to_i
+      puts "For enter number of train: " 
+      number_train = gets.chomp
+      puts @routes_list[select_route] # из списка по имени маршрута отображаем выбранный маршрут (для более понятного представления пользователю) 
+      @routes_trains[number_train] = @routes_list[select_route] # составляем хэш поезд: маршрут
+      puts @routes_trains # итого имеем хэш - номер поезда: маршрут. Нужно добавить при обработке новой станции на маршруте поиск маршрута
+      #теперь для пунка 7 надо вернуть сопоставление, и поставить поезд на 1 станцию маршрута
+      @routes_list[select_route]
+      assigned_route = @routes_trains[number_train] # присваем массиву маршрут поезда
+      puts "Assigned route is #{assigned_route}" # проверяем
+      @train_pos_now = 0 # устанавливаем переменную на первую станцию
+      puts "Train on station: #{@train_pos_now}" 
+    end
 
   def list # список пунктов меню с методами, определенными выше
     loop do
@@ -222,6 +224,8 @@ class MainMenu
         view_stations_routes_and_trains  
         end
       end  
+
+
   end
 end
 
