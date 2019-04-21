@@ -26,8 +26,7 @@ class MainMenu
     print "Enter name of new station: "
     station_name = gets.chomp
     station = Station.new(station_name)
-    @stations << station_name
-    puts "Station #{station_name} was created!"
+    @stations << station
   end
   
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
