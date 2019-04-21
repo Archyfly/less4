@@ -8,16 +8,7 @@ class Route
     @route_list = [start_station, end_station]
   end
 
-  def add_station_after(substation_before, substation)
-    index_before = @route_list.index(substation_before)
-    @route_list.insert(index_before+1, substation)
-  end
-
-  def del_station_from_route(substation)
-    @route_list.delete(substation)
-  end
-
-  def display
+  def display_route
     "route = #{@route_list}"
     puts "route = #{@route_list}"
     @route_list
@@ -31,27 +22,32 @@ class Route
     @route_list[-1]
   end
 
-  def route_name(route_list)
-    @route_name = route_name
+  def add_station_after(substation_before, substation)
+    index_before = @route_list.index(substation_before)
+    @route_list.insert(index_before+1, substation)
   end
 
+  def del_station_from_route(substation)
+    @route_list.delete(substation)
+  end
 
-  def name # для определения маршрута по имени в формате first-last
+  def route_name # для определения маршрута по имени в формате first-last
     @name = route_list.first + "-" + route_list.last
     puts "name = #{@name}"
   end
 
 end
-=begin
+
 route1 = Route.new('Irkutsk', 'Moscow')
-route1.display
+puts route1
+route1.display_route
 route1.add_station_after('Irkutsk', 'Yurga')
-route1.display
+route1.display_route
 route1.add_station_after('Yurga', 'Novosib')
-route1.display
+route1.display_route
 route1.add_station_after('Novosib', 'Kazan')
-route1.display
+route1.display_route
 route1.del_station_from_route('Kazan')
-route1.display
-route1.name
-=end
+route1.display_route
+route1.route_name
+

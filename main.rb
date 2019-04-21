@@ -24,13 +24,13 @@ class MainMenu
 
   def create_new_station # для пункта 1, создание станции
     print "Enter name of new station: "
-    station_name = gets.chomp
-    station = Station.new(station_name)
+    new_station_name = gets.chomp
+    station = Station.new(new_station_name)
     @stations << station
   end
   
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
-    @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station}"}
+    @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.display}"}
     @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages"}
   end
@@ -172,22 +172,23 @@ class MainMenu
     @stations.find { |station| station.name == station_name }
   end
 
-    def set_routes_trains # для пункта 4 - назначаем маршрут поезду
-      puts "Select route for assign to train: "
-      puts @routes_list
-      select_route = gets.chomp.to_i
-      puts "For enter number of train: " 
-      number_train = gets.chomp
-      puts @routes_list[select_route] # из списка по имени маршрута отображаем выбранный маршрут (для более понятного представления пользователю) 
-      @routes_trains[number_train] = @routes_list[select_route] # составляем хэш поезд: маршрут
-      puts @routes_trains # итого имеем хэш - номер поезда: маршрут. Нужно добавить при обработке новой станции на маршруте поиск маршрута
-      #теперь для пунка 7 надо вернуть сопоставление, и поставить поезд на 1 станцию маршрута
-      @routes_list[select_route]
-      assigned_route = @routes_trains[number_train] # присваем массиву маршрут поезда
-      puts "Assigned route is #{assigned_route}" # проверяем
-      @train_pos_now = 0 # устанавливаем переменную на первую станцию
-      puts "Train on station: #{@train_pos_now}" 
-    end
+  def set_routes_trains # для пункта 4 - назначаем маршрут поезду
+    puts "Select route for assign to train: "
+    puts @routes_list
+    select_route = gets.chomp.to_i
+    puts "For enter number of train: " 
+    number_train = gets.chomp
+    puts @routes_list[select_route] # из списка по имени маршрута отображаем выбранный маршрут (для более понятного представления пользователю) 
+    @routes_trains[number_train] = @routes_list[select_route] # составляем хэш поезд: маршрут
+    puts @routes_trains # итого имеем хэш - номер поезда: маршрут. Нужно добавить при обработке новой станции на маршруте поиск маршрута
+    #теперь для пунка 7 надо вернуть сопоставление, и поставить поезд на 1 станцию маршрута
+    @routes_list[select_route]
+    assigned_route = @routes_trains[number_train] # присваем массиву маршрут поезда
+    puts "Assigned route is #{assigned_route}" # проверяем
+    @train_pos_now = 0 # устанавливаем переменную на первую станцию
+    puts "@routes = #{@routes}"
+    puts "Train on station: #{@route_list[@train_pos_now]} " 
+  end
 
   def list # список пунктов меню с методами, определенными выше
     loop do
@@ -204,27 +205,25 @@ class MainMenu
       puts "0 - EXIT"
       choice = gets.chomp
       break if choice == "0"
-      case 
-        when choice == "1" # Создавать станции -----------------------------------
+      case choice
+        when "1" # Создавать станции -----------------------------------
           create_new_station
-        when choice == "2" #  Создавать поезда -----------------------------------
+        when "2" #  Создавать поезда -----------------------------------
           create_new_train
-        when choice == "3" #  Создавать маршруты и управлять станциями в нем (добавлять, удалять)
+        when "3" #  Создавать маршруты и управлять станциями в нем (добавлять, удалять)
           create_change_route
-        when choice == "4" #  Назначать маршрут поезду ---------------------------
+        when "4" #  Назначать маршрут поезду ---------------------------
           set_routes_trains #set_route_to_train
-        when choice == "5" #  Добавлять вагоны к поезду --------------------------
+        when "5" #  Добавлять вагоны к поезду --------------------------
           carriage_add_to_train     
-        when choice == "6" #  Отцеплять вагоны от поезда -------------------------
+        when "6" #  Отцеплять вагоны от поезда -------------------------
           carriage_delete_from_train
-        when choice == "7" #  Перемещать поезд по маршруту вперед и назад --------
+        when "7" #  Перемещать поезд по маршруту вперед и назад --------
           move_train_on_assigned_route
-        when choice == "8" #  Просматривать список станций и список поездов на станции
+        when "8" #  Просматривать список станций и список поездов на станции
         view_stations_routes_and_trains  
         end
       end  
-
-
   end
 end
 

@@ -9,6 +9,10 @@ class Station
     @train_on_station = [] # задаем пустой массив поездов на станции - сюда передавать будем
   end
   
+  def station_name
+    @name
+  end
+  
   def display_trains_on_station
   	puts "Train on station now is: #{@train_on_station}"
   end
@@ -24,6 +28,7 @@ class Station
   	puts "Train #{train} departed from #{@name}"
     puts "Trains on the station now is #{@train_on_station}"
   end
+
 end
 =begin
 train1 = CargoTrain.new(185)
