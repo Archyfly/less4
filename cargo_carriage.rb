@@ -7,7 +7,11 @@ class CargoCarriage < Carriage # грузовой вагон
     super
     @type_carriage = 'cargo'
     @places = 20
-   end
+  end
+
+  def change # вызываем приватный метод, позволяющий менять число мест
+    change_places 
+  end
 
 private
 
@@ -17,7 +21,7 @@ private
 
 end
 
-cargo1 = CargoCarriage.new('tank', 1)
-cargo1.eco_danger
+cargo1 = CargoCarriage.new
 cargo1.carriage_display_info
-
+cargo1.change
+cargo1.carriage_display_info
