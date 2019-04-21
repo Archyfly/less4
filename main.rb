@@ -5,6 +5,9 @@ require_relative './train'
 require_relative './cargo_train'
 require_relative './passenger_train'
 require_relative './carriage' 
+require_relative './passenger_carriage' 
+require_relative './cargo_carriage' 
+
 
 class MainMenu
 
@@ -40,17 +43,14 @@ class MainMenu
     train_type = gets.chomp
     if train_type == "cargo"  
       new_train = CargoTrain.new(number_train)
-      new_train.train_type = train_type
-      @trains << new_train
-      puts "New #{train_type} train number: #{number_train} was created!"
     elsif train_type == "pass"
       new_train = PassTrain.new(number_train)
-      new_train.train_type = train_type
-      @trains << new_train
-      puts "New #{train_type} train number: #{number_train} was created!"
     else
       puts "Unknown type of train"
     end
+    new_train.train_type = train_type
+    @trains << new_train
+    puts "New #{train_type} train number: #{number_train} was created!"
   end
 
   def create_change_route # для пункта 3 - создание, изменение маршрута. 

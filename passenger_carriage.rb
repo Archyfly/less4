@@ -7,7 +7,11 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
     super
     @type_carriage = 'pass'
     @places = 46
-   end
+  end
+
+  def change # вызываем приватный метод, позволяющий менять число мест
+    change_places 
+  end
 
 private
 
@@ -17,9 +21,9 @@ private
 
 end
 #тест
-=begin
-vagon = PassengerCarriage.new()
-puts vagon.pass
-puts vagon.plackart
-puts vagon.kupe
-=end
+#=begin
+vagon = PassengerCarriage.new
+vagon.carriage_display_info
+vagon.change
+vagon.carriage_display_info
+#=end

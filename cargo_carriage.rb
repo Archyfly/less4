@@ -21,7 +21,9 @@ private
 
 end
 
+=begin
 cargo1 = CargoCarriage.new
 cargo1.carriage_display_info
 cargo1.change
 cargo1.carriage_display_info
+=end
