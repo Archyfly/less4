@@ -1,21 +1,21 @@
 require "./route.rb"
-class PassengerCarriage # пассажирский вагон
-# тип плацкарт, купэ, сидячий
-# количество мест
-  def pass
-    50  
-  end
-  def plackart
-    80
+require "./carriage.rb"
+
+class PassengerCarriage < Carriage # пассажирский вагон - потомок класса вагон
+  
+  def initialize
+    super
+    @type_carriage = 'pass'
+    @places = 46
+   end
+
+private
+
+  def change_places
+    @places = 72 
   end
 
-
-
-  def kupe
-    32  
-  end
 end
-
 #тест
 =begin
 vagon = PassengerCarriage.new()

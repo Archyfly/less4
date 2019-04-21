@@ -1,5 +1,6 @@
 class Train
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
+  
   def initialize(number, speed = 0, train_pos_now = 'Depo')
     @number = number # Номер поезда
     @train_type = train_type # Тип поезда
@@ -53,8 +54,8 @@ class Train
   end
 
   def set_route(route_set_to_train)
-  @train_pos_now = 0
-  @route
+    @train_pos_now = 0
+    @route
   end
 end
 

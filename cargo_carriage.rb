@@ -2,16 +2,17 @@ require "./route.rb"
 require_relative "./carriage.rb"
 
 class CargoCarriage < Carriage # грузовой вагон
-  # cargo_type - тип платформа, цистерна, крытый (tank, platform, box)
-  # filling - заполнение, полный или пустой 
-  attr_accessor :filling
+ 
+  def initialize
+    super
+    @type_carriage = 'cargo'
+    @places = 20
+   end
 
-  def filling # пустой или заполненный
-    self.filling = 1
-  end
-  
-  def eco_danger # опасный груз или нет 
-    eco_danger = 1
+private
+
+  def change_places
+    @places = 40 
   end
 
 end
