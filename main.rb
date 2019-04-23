@@ -6,10 +6,11 @@ require_relative './cargo_train'
 require_relative './passenger_train'
 require_relative './carriage' 
 require_relative './passenger_carriage' 
-require_relative './cargo_carriage' 
+require_relative './cargo_carriage'
+require_relative './manufacturer' 
 
 class MainMenu
-
+  include Manufacturer
   attr_accessor :stations, :trains, :routes
 
   def initialize
@@ -170,6 +171,10 @@ class MainMenu
     @routes.find { |route| route.route_name == route_name }
   end
 
+  def set_manufacturer
+    puts "Enter name of manufacturer: "
+    man_name = gets.chomp
+  end
 
   def list # список пунктов меню с методами, определенными выше
     loop do
@@ -203,6 +208,8 @@ class MainMenu
           move_train_on_assigned_route
         when "8" #  Просматривать список станций и список поездов на станции
         view_stations_routes_and_trains  
+        when "9"
+          set_manufacturer
         end
       end  
   end

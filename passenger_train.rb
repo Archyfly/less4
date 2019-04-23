@@ -5,5 +5,5 @@ class PassTrain < Train
     super
     @type = 'pass'
   end
-  
+
 end
