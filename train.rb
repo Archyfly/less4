@@ -1,6 +1,8 @@
+require './manufacturer.rb'
 class Train
-  attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
   
+  attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
+  include Manufacturer
   def initialize(number, speed = 0, train_pos_now = 'Depo')
     @number = number # Номер поезда
     @train_type = train_type # Тип поезда
@@ -11,6 +13,7 @@ class Train
     @carriage_count = 0 # более понятная переменная для числа вагончиков
     @type_carriage = type_carriage # тип вагончика. 
     @train_pos_now = train_pos_now # хранение текущей позиции
+   
   end
   
   def display_train_info# общие параметры отображения class Train 

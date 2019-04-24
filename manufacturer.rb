@@ -1,19 +1,27 @@
 module Manufacturer
-  #attr_accessor :manufacturer
-  attr_accessor :man_name
-  def manuf_name(man)
-    self.man_name = man
-  end
 
-  def manuf_name_display
-    puts self.man_name
-  end
+attr_accessor :man_assign
 
-  def assign_man
-   man_assign = gets.chomp
-   self.manuf_name(man_assign)
-  #protected
-end
+  def man_assign(manufacturer_name)
+    @man_assign = manufacturer_name
+  end
+ 
+  def manufacturer_name_display
+    puts "fm Manufacturer is #{@man_assign}"
+  end
 
 end
 
+class Man
+  include Manufacturer
+end
+
+=begin
+  
+manufacturer2 = Man.new
+manufacturer2.man_assign('Loko')
+#manufacturer1 = Man.new
+
+manufacturer2.manufacturer_name_display
+#manufacturer2.manufacturer_name_display
+=end

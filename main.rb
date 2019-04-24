@@ -29,7 +29,7 @@ class MainMenu
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name}"}
-    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages"}
+    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer IT IS #{train.manufacturer_name_display}"}
   end
   
   def create_new_train # для пункта 2, создание поезда
@@ -37,6 +37,8 @@ class MainMenu
     number_train = gets.chomp
     print "Enter type of train (cargo or pass): "
     train_type = gets.chomp
+    print "Enter Manufacturer of train : "
+    manufacturer_name = gets.chomp
     if train_type == "cargo"  
       new_train = CargoTrain.new(number_train)
     elsif train_type == "pass"
@@ -45,6 +47,7 @@ class MainMenu
       puts "Unknown type of train"
     end
     new_train.train_type = train_type
+    new_train.man_assign(manufacturer_name)
     @trains << new_train
     puts "New #{train_type} train number: #{number_train} was created!"
   end
