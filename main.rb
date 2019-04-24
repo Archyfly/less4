@@ -29,7 +29,7 @@ class MainMenu
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name}"}
-    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer IT IS #{train.manufacturer_name_display}"}
+    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. "}
   end
   
   def create_new_train # для пункта 2, создание поезда
