@@ -1,12 +1,21 @@
 require "./train.rb"
 require "./cargo_train.rb"
-
+require "./instance_counter"
 class Station
   
+  @@count = 0
+  include InstanceCounter
+
+  def self.all
+    puts "Количество станций (созданных экзэмпляров) #{@@count}"  
+  end
+
   def initialize(name) # Создаем станцию name
     @name = name
     puts "New station created. Name of station: #{name}"
     @train_on_station = [] # задаем пустой массив поездов на станции - сюда передавать будем
+    @@count += 1
+    
   end
   
   def station_name
@@ -40,6 +49,12 @@ train2.train_type = 'Cargo'
 station1.train_arrived(train2.number)
 station1.train_departure(train1.number)
 =end
+#station1 = Station.new('Elovka')
+#station2 = Station.new('Pihtovka')
+#station3 = Station.new('Kedrovka')
+#station4 = Station.new('Sosnovka')
+#Station.all
+
 
 
 

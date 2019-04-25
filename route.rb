@@ -1,5 +1,9 @@
 #require "./cl_station"
+require_relative './instance_counter'
+
 class Route
+
+  include InstanceCounter
   attr_accessor :substation, :route_list, :route_name
 
   def initialize(start_station, end_station)

@@ -7,16 +7,16 @@ attr_accessor :man_assign
   end
  
   def manufacturer_name_display
-    puts "fm Manufacturer is #{@man_assign}"
+    puts "Manufacturer is #{@man_assign}"
   end
 
 end
 
+=begin
 class Man
   include Manufacturer
 end
 
-=begin
   
 manufacturer2 = Man.new
 manufacturer2.man_assign('Loko')

@@ -8,9 +8,11 @@ require_relative './carriage'
 require_relative './passenger_carriage' 
 require_relative './cargo_carriage'
 require_relative './manufacturer' 
-
+require_relative './instance_counter'
 class MainMenu
   include Manufacturer
+  include InstanceCounter
+  
   attr_accessor :stations, :trains, :routes
 
   def initialize
@@ -29,7 +31,9 @@ class MainMenu
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name}"}
-    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. "}
+    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer is #{train.manufacturer_name_display}"} 
+    Station.all
+    Route.instances
   end
   
   def create_new_train # для пункта 2, создание поезда
@@ -163,7 +167,6 @@ class MainMenu
   def find_train_number(number_train) # вспомогательный метод, часто
     @trains.find { |train| train.number == number_train }
     #puts @trains.find { |train| train.number == number_train } 
-    
   end
   
   def find_station(station_name) # ищем станцию по имени
