@@ -8,9 +8,9 @@ class Station
 
   include InstanceCounter
 
-  def self.all
-    puts "Количество станций (созданных экзэмпляров) #{@@count}"  
-    puts @@existing_stations #  который возвращает все станции (объекты), созданные на данный момент  
+  def self.all # метод класс all, для него в main пункт 9 
+    puts "Count of stations: #{@@count}"  
+    @@existing_stations #  который возвращает все станции (объекты), созданные на данный момент  
   end
 
   def initialize(name) # Создаем станцию name
