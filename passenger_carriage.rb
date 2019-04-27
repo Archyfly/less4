@@ -21,9 +21,9 @@ private
 
 end
 #тест
-#=begin
+=begin
 vagon = PassengerCarriage.new
 vagon.carriage_display_info
 vagon.change
 vagon.carriage_display_info
-#=end
+=end

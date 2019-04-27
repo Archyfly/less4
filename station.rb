@@ -4,18 +4,22 @@ require "./instance_counter"
 class Station
   
   @@count = 0
+  @@existing_stations = []  # который возвращает все станции (объекты), созданные на данный момент (хотя эти экземпляры уже собраны в main.rb @stations)
+
   include InstanceCounter
 
   def self.all
     puts "Количество станций (созданных экзэмпляров) #{@@count}"  
+    puts @@existing_stations #  который возвращает все станции (объекты), созданные на данный момент  
   end
 
   def initialize(name) # Создаем станцию name
     @name = name
     puts "New station created. Name of station: #{name}"
     @train_on_station = [] # задаем пустой массив поездов на станции - сюда передавать будем
+    puts "#{register_instance} instances of station now " #из InstanceCounter 
     @@count += 1
-    
+    @@existing_stations << self 
   end
   
   def station_name
@@ -54,7 +58,3 @@ station1.train_departure(train1.number)
 #station3 = Station.new('Kedrovka')
 #station4 = Station.new('Sosnovka')
 #Station.all
-
-
-
-

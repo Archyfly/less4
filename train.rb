@@ -1,9 +1,19 @@
 require './manufacturer.rb'
+require './instance_counter.rb'
 class Train
-  @@instances = 0
+  
+  include Manufacturer
+  include InstanceCounter
+  
+  @@existing_trains = [] # сюда записываем созданные экземпляры поездов
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
-  include Manufacturer
+  
+  def self.find(number_train) # возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
+    puts @@existing_trains.find { |train| train.number == number_train }
+    puts "Search completed"
+  end
+
   def initialize(number, speed = 0, train_pos_now = 'Depo')
     @number = number # Номер поезда
     @train_type = train_type # Тип поезда
@@ -14,9 +24,9 @@ class Train
     @carriage_count = 0 # более понятная переменная для числа вагончиков
     @type_carriage = type_carriage # тип вагончика. 
     @train_pos_now = train_pos_now # хранение текущей позиции
-  self.instances 
+    @@existing_trains << self # отправка экземпляра
+    puts "#{register_instance} instances of train now "
   end
-  
 
   def display_train_info# общие параметры отображения class Train 
     puts "Train #{@number}. Type of train: #{@train_type}. Train has speed #{@speed}"
@@ -104,3 +114,4 @@ class Train
   end
 end
 
+#train1 = Train.new(12)

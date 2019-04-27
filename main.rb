@@ -30,12 +30,14 @@ class MainMenu
   
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
-    @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name}"}
+    @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
     @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer is #{train.manufacturer_name_display}"} 
-    Station.all
-    Route.instances
   end
   
+  def stations_all
+    puts Station.all
+  end
+
   def create_new_train # для пункта 2, создание поезда
     print "Enter number of train: "
     number_train = gets.chomp
@@ -194,6 +196,8 @@ class MainMenu
       puts "6 - delete carriages of train" #  Отцеплять вагоны от поезда
       puts "7 - move train on route"      #  Перемещать поезд по маршруту вперед и назад
       puts "8 - display stations and trains on station" #  Просматривать список станций и список поездов на станции
+      puts "9 - display stations objects" #  Отобразить станции объектами
+      puts "10 - find train by number " # Возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
       puts "0 - EXIT"
       choice = gets.chomp
       break if choice == "0"
@@ -213,9 +217,9 @@ class MainMenu
         when "7" #  Перемещать поезд по маршруту вперед и назад --------
           move_train_on_assigned_route
         when "8" #  Просматривать список станций и список поездов на станции
-        view_stations_routes_and_trains  
-        when "9"
-          set_manufacturer
+          view_stations_routes_and_trains  
+        when "9" #  Отобразить станции объектами
+          stations_all
         end
       end  
   end

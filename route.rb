@@ -10,6 +10,8 @@ class Route
     @start_station = start_station
     @end_station = end_station
     @route_list = [start_station, end_station]
+    #@@instances += 1
+    puts "#{register_instance} instances of route now "
   end
 
   def display_route
