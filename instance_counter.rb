@@ -1,4 +1,5 @@
 module InstanceCounter
+attr_reader :instances
 
   def self.included(base)
     base.extend ClassMethod
@@ -10,7 +11,7 @@ module InstanceCounter
     
     def add_count
       @instances ||= 0
-      print @instances += 1
+      @instances += 1
     end  
   end  
   
@@ -21,24 +22,4 @@ module InstanceCounter
     end
   
   end
-
 end
-
-=begin
-class Inst
-@instances = 0
-
-include InstanceCounter
-  
-  def initialize
-    @instances += 1
-    perem = @instances
-    self.class.instances(@perem)
-  end
-
-end
-
-inst1 = Inst.new
-inst2 = Inst.new
-inst3 = Inst.new
-=end

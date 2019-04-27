@@ -115,7 +115,8 @@ class Train
   end
 end
 
-#train1 = Train.new(12)
+train1 = Train.new(12)
 #Train.find(12)
+
 
 
