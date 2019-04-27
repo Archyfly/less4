@@ -5,12 +5,13 @@ class Train
   include Manufacturer
   include InstanceCounter
   
-  @@existing_trains = [] # сюда записываем созданные экземпляры поездов
+  @@existing_trains = {} # сюда записываем созданные экземпляры поездов
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
   
   def self.find(number_train) # возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
-    puts @@existing_trains.find { |train| train.number == number_train }
+    puts @@existing_trains
+    puts @@existing_trains.find { |key, train| train.number == key }
     puts "Search completed"
   end
 
@@ -24,7 +25,7 @@ class Train
     @carriage_count = 0 # более понятная переменная для числа вагончиков
     @type_carriage = type_carriage # тип вагончика. 
     @train_pos_now = train_pos_now # хранение текущей позиции
-    @@existing_trains << self # отправка экземпляра
+    @@existing_trains[number] = self # отправка экземпляра
     puts "#{register_instance} instances of train now "
   end
 
@@ -115,3 +116,6 @@ class Train
 end
 
 #train1 = Train.new(12)
+#Train.find(12)
+
+

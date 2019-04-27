@@ -31,7 +31,7 @@ class MainMenu
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
-    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer is #{train.manufacturer_name_display}"} 
+    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer is #{train.man_assign}"} 
   end
   
   def stations_all
@@ -53,7 +53,7 @@ class MainMenu
       puts "Unknown type of train"
     end
     new_train.train_type = train_type
-    new_train.man_assign(manufacturer_name)
+    new_train.man_assign = manufacturer_name
     @trains << new_train
     puts "New #{train_type} train number: #{number_train} was created!"
   end
@@ -177,11 +177,6 @@ class MainMenu
   
   def find_route_by_name(route_name)
     @routes.find { |route| route.route_name == route_name }
-  end
-
-  def set_manufacturer
-    puts "Enter name of manufacturer: "
-    man_name = gets.chomp
   end
 
   def list # список пунктов меню с методами, определенными выше

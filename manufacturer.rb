@@ -1,14 +1,14 @@
 module Manufacturer
 
-attr_accessor :man_assign
+attr_accessor :man_assign, :manufacturer_name
 
-  def man_assign(manufacturer_name)
-    @man_assign = manufacturer_name
-  end
+#  def man_assign
+#    @man_assign = manufacturer_name
+#  end
  
-  def manufacturer_name_display
-    puts "Manufacturer is #{@man_assign}"
-  end
+  # def manufacturer_name_display
+  #  puts "Manufacturer is #{@man_assign}"
+  # end
 
 end
 
