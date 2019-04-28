@@ -1,5 +1,4 @@
 module InstanceCounter
-attr_reader :instances
 
   def self.included(base)
     base.extend ClassMethod
@@ -7,6 +6,7 @@ attr_reader :instances
   end
   
   module ClassMethod
+  attr_reader :instances
   @instances = 0  
     
     def add_count
