@@ -21,8 +21,14 @@ class MainMenu
     @routes = []    # хранит обьекты маршрут из new_route
   end
 
+  def find_train
+    puts "Enter number of train: "
+    number_train = gets.chomp
+    puts "Train found: #{Train.find(number_train)}"
+  end
+
   def create_new_station # для пункта 1, создание станции
-    print "Enter name of new station: "
+    puts "Enter name of new station: "
     new_station_name = gets.chomp
     station = Station.new(new_station_name)
     @stations << station
@@ -215,6 +221,8 @@ class MainMenu
           view_stations_routes_and_trains  
         when "9" #  Отобразить станции объектами
           stations_all
+        when "10"
+          find_train            
         end
       end  
   end

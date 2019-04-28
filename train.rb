@@ -9,10 +9,8 @@ class Train
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
   
-  def self.find(number_train) # возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
-    puts @@existing_trains
-    puts @@existing_trains.find { |key, train| train.number == key }
-    puts "Search completed"
+  def self.find(number_train)
+    @@existing_trains[number_train]
   end
 
   def initialize(number, speed = 0, train_pos_now = 'Depo')
