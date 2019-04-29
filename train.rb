@@ -9,6 +9,8 @@ class Train
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
   
+  NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i
+
   def self.find(number_train)
     @@existing_trains[number_train]
   end
@@ -24,7 +26,8 @@ class Train
     @type_carriage = type_carriage # тип вагончика. 
     @train_pos_now = train_pos_now # хранение текущей позиции
     @@existing_trains[number] = self # отправка экземпляра
-    puts "#{register_instance} instances of train now "
+    register_instance
+    validate!
   end
 
   def display_train_info# общие параметры отображения class Train 
@@ -72,11 +75,6 @@ class Train
     end
   end
 
-  #def set_route(route_set_to_train)
-  #  @train_pos_now = 0
-  #  @route
-  #end
-
   def train_on_route(number, station) # получаем маршрут - массив из route
     station.each { |stat| @position << stat } # переписываем маршрут в position для дальнейшей работы
     puts "Train #{@number} arrived at #{@position[0]}"
@@ -111,9 +109,25 @@ class Train
       puts "Train at the start of route!"
     end
   end
+
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
+  protected
+
+    def validate!
+    raise "Number can't be nil" if number.nil?
+    raise "Number should be at least 6 symbols" if number.to_s.size < 5 
+    raise "Number has invalid format" if number !~ NUMBER_FORMAT
+    true
+  end
+
 end
 
-train1 = Train.new(12)
+train1 = Train.new('122ww')
 #Train.find(12)
 
 

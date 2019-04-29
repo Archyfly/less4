@@ -7,8 +7,7 @@ module InstanceCounter
   
   module ClassMethod
   attr_reader :instances
-  @instances = 0  
-    
+      
     def add_count
       @instances ||= 0
       @instances += 1
