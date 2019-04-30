@@ -9,14 +9,13 @@ class Train
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
   
-  NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i
-
   def self.find(number_train)
     @@existing_trains[number_train]
   end
 
   def initialize(number, speed = 0, train_pos_now = 'Depo')
     @number = number # Номер поезда
+    
     @train_type = train_type # Тип поезда
     @speed = speed # Скорость поезда
     @position = [] # для движения по маршруту
@@ -27,7 +26,7 @@ class Train
     @train_pos_now = train_pos_now # хранение текущей позиции
     @@existing_trains[number] = self # отправка экземпляра
     register_instance
-    validate!
+    
   end
 
   def display_train_info# общие параметры отображения class Train 
@@ -110,20 +109,6 @@ class Train
     end
   end
 
-  def valid?
-    validate!
-  rescue
-    false
-  end
-
-  protected
-
-    def validate!
-    raise "Number can't be nil" if number.nil?
-    raise "Number should be at least 6 symbols" if number.to_s.size < 5 
-    raise "Number has invalid format" if number !~ NUMBER_FORMAT
-    true
-  end
 
 end
 
