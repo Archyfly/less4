@@ -33,6 +33,7 @@ class Route
   end
 
   def del_station_from_route(substation)
+    raise "You can't remove this station." if substation == @route_list[-1] || substation == @route_list[0]
     @route_list.delete(substation)
   end
 

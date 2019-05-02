@@ -118,10 +118,15 @@ class MainMenu
             retry
           end
         when "del"
+          begin 
           puts new_route.display_route
           print "Enter name of station to delete: "
           del_station = gets.chomp
           new_route.del_station_from_route(del_station)
+            rescue StandardError => err # если ошибка, то пишем что в ошибке (в классе Route, что станция существует уже)
+            error_message err
+            retry
+          end
         when "display"
           @routes.each_with_index { |route, i| puts "Route #{i+1} - #{route.route_name}"}
           #@routes.each_with_index { |route, i| @routes_list[i+1] = route.display_route}
