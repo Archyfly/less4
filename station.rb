@@ -16,7 +16,7 @@ class Station
   def initialize(name) # Создаем станцию name
     @name = name
     validate!
-    puts "validate = #{validate?}"
+    #puts "validate = #{validate?}" для проверки валидности
     @train_on_station = [] # задаем пустой массив поездов на станции - сюда передавать будем
     register_instance #из InstanceCounter 
     @@count += 1
@@ -35,20 +35,20 @@ class Station
     @name
   end
   
-  def display_trains_on_station
-  	puts "Train on station now is: #{@train_on_station}"
-  end
+  #def display_trains_on_station
+  #	puts "Train on station now is: #{@train_on_station}"
+  #end
   
   def train_arrived(train)
-    puts "Train arrived on the station #{@name}"
+  #  puts "Train arrived on the station #{@name}"
     @train_on_station << train
-    puts "Trains on the station now is #{@train_on_station}"
+  #  puts "Trains on the station now is #{@train_on_station}"
   end
 
   def train_departure(train)
   	@train_on_station.delete(train)
-  	puts "Train #{train} departed from #{@name}"
-    puts "Trains on the station now is #{@train_on_station}"
+  #  puts "Train #{train} departed from #{@name}"
+  #  puts "Trains on the station now is #{@train_on_station}"
   end
 
   protected

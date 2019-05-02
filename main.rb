@@ -37,7 +37,6 @@ class MainMenu
       puts "Enter name of new station: "
       new_station_name = gets.chomp
       station = Station.new(new_station_name)
-      #raise "Enter station name! (should be at least 3 symbols)" 
     rescue RuntimeError
       puts "Enter CORRECT! station name (should be at least 3 symbols/digits)"
     retry
@@ -156,6 +155,7 @@ class MainMenu
   end
 
   def move_train_on_assigned_route
+    
     puts "Enter train number to move"
     number_train = gets.chomp
     
@@ -178,15 +178,17 @@ class MainMenu
     puts "Enter number of train to add carriage"
     train_number = gets.chomp
     train = find_train_number(train_number) # метод поиска поезда по номеру find_train_number, поезд к которому хотим добавить вагон
-    if train.train_type == 'cargo' 
-      carriage = CargoCarriage.new
-      train.carriage_add(carriage)
-      puts "Train #{train_number} has #{train.carriage_count} carriages"
-    elsif train.train_type == 'pass'
-      carriage = PassengerCarriage.new
-      train.carriage_add(carriage)
-      puts "Train #{train_number} has #{train.carriage_count} carriages"
-    else
+    if train.speed != 0 
+      puts "Carriage cannot be added! Speed = #{@speed}"
+      elsif train.train_type == 'cargo' 
+        carriage = CargoCarriage.new
+        train.carriage_add(carriage)
+        puts "Train #{train_number} has #{train.carriage_count} carriages"
+      elsif train.train_type == 'pass'
+        carriage = PassengerCarriage.new
+        train.carriage_add(carriage)
+        puts "Train #{train_number} has #{train.carriage_count} carriages"
+      else
       puts "Train not found!"
     end
   end
@@ -195,8 +197,14 @@ class MainMenu
     puts "Enter number of train to delete carriage"
     number_train = gets.chomp
     train = find_train_number(number_train) # метод поиска поезда по номеру find_train_number, поезд у которого убираем вагон, добавить проверку количества вагонов carriage_count
-    train.carriage_del
-    puts "Train #{number_train} has #{train.carriage_count} carriages"
+    if train.speed != 0 
+      puts "Train on route. Speed = #{train.speed}"  
+      elsif train.carriage_count > 0
+      train.carriage_del
+      puts "Carriage has been deleted. Train has #{train.carriage_count} railway_carriages now."         
+      else          
+      puts "Carriage hasn't railway_carriages."         
+    end
   end  
      
   def find_train_number(number_train) # вспомогательный метод, часто
