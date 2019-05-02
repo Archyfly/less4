@@ -2,6 +2,9 @@ require './manufacturer.rb'
 require './instance_counter.rb'
 class Train
   
+  NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i
+  TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/
+
   include Manufacturer
   include InstanceCounter
   
@@ -15,7 +18,6 @@ class Train
 
   def initialize(number, speed = 0, train_pos_now = 'Depo')
     @number = number # Номер поезда
-    
     @train_type = train_type # Тип поезда
     @speed = speed # Скорость поезда
     @position = [] # для движения по маршруту
@@ -26,9 +28,10 @@ class Train
     @train_pos_now = train_pos_now # хранение текущей позиции
     @@existing_trains[number] = self # отправка экземпляра
     register_instance
-    
+    validate!
+   
   end
-
+ 
   def display_train_info# общие параметры отображения class Train 
     puts "Train #{@number}. Type of train: #{@train_type}. Train has speed #{@speed}"
   end
@@ -110,9 +113,25 @@ class Train
   end
 
 
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
+  protected
+
+  def validate!
+      raise "Number can't be nil" if @number.nil?
+      raise "Number should be at least 6 symbols" if @number.to_s.size < 5 
+      raise "Number has invalid format" if @number !~ NUMBER_FORMAT
+    true
+  end
 end
 
-train1 = Train.new('122ww')
+
+
+#train1 = Train.new('122wwww')
 #Train.find(12)
 
 

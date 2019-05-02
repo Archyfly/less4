@@ -15,16 +15,20 @@ class Station
 
   def initialize(name) # Создаем станцию name
     @name = name
+    validate!
+    puts "validate = #{validate?}"
     @train_on_station = [] # задаем пустой массив поездов на станции - сюда передавать будем
     register_instance #из InstanceCounter 
     @@count += 1
     @@existing_stations << self 
+    
   end
   
   def validate?
     validate!
-    rescue
+    rescue StandardError
     false
+  retry
   end
 
   def station_name
@@ -50,7 +54,13 @@ class Station
   protected
 
   def validate!
+    raise "Station name can't be nil" if station_name.to_s.size < 3
+    true
   end
 
 end
 
+#station1 = Station.new('M2')
+#station2 = Station.new('Depo')
+#station2.train_arrived(2)
+#station2.display_trains_on_station

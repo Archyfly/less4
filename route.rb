@@ -27,6 +27,7 @@ class Route
   end
 
   def add_station_after(substation_before, substation)
+    raise "Station #{substation} exist!" if @route_list.include?(substation)
     index_before = @route_list.index(substation_before)
     @route_list.insert(index_before+1, substation)
   end

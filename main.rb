@@ -9,12 +9,12 @@ require_relative './passenger_carriage'
 require_relative './cargo_carriage'
 require_relative './manufacturer' 
 require_relative './instance_counter'
-require_relative './validate'
+#require_relative './validate'
 
 class MainMenu
   include Manufacturer
   include InstanceCounter
-  include Validate
+  #include Validate
   
 
   attr_accessor :stations, :trains, :routes
@@ -26,25 +26,22 @@ class MainMenu
     @number_train
   end
 
-
-
   def find_train
     puts "Enter number of train: "
     number_train = gets.chomp
     puts "Train found: #{Train.find(number_train)}"
   end
-
   
   def create_new_station # для пункта 1, создание станции
     begin
-    puts "Enter name of new station: "
-    new_station_name = gets.chomp
-    valid_station(new_station_name)
-    rescue
-    puts "Enter station name!"
+      puts "Enter name of new station: "
+      new_station_name = gets.chomp
+      station = Station.new(new_station_name)
+      #raise "Enter station name! (should be at least 3 symbols)" 
+    rescue RuntimeError
+      puts "Enter CORRECT! station name (should be at least 3 symbols/digits)"
     retry
     end
-    station = Station.new(new_station_name)
     @stations << station
   end
   
@@ -58,33 +55,24 @@ class MainMenu
     puts Station.all
   end
 
-  #def create_new_train # для пункта 2, создание поезда"
-  #end
   def create_new_train
-    begin 
-      print "Enter number of train: "
-      number_train = gets.chomp
-      valid_number(number_train)
-    rescue
-      puts "Format: 3 symbols/digits optional dash and 2 symbols/digits"
-    retry
-    end
     begin
-      print "Enter type of train (cargo or pass): "
+      puts "Enter number of train. Format of number should be xxxxx or xxx-xx"
+      number_train = gets.chomp
+      puts "Enter type of train (cargo or pass): "
       train_type = gets.chomp
-      valid_type(train_type)
-    rescue
-    puts " Format: 'pass' or 'cargo'"
-    retry
-    end
-    print "Enter Manufacturer of train : "
-    manufacturer_name = gets.chomp
-    if train_type == "cargo"  
-      new_train = CargoTrain.new(number_train)
-    elsif train_type == "pass"
-      new_train = PassTrain.new(number_train)
-    else
-      puts "Unknown type of train"
+      puts "Enter Manufacturer of train : "
+      manufacturer_name = gets.chomp
+      if train_type == "cargo"  
+        new_train = CargoTrain.new(number_train)
+      elsif train_type == "pass"
+        new_train = PassTrain.new(number_train)
+      else
+        puts "Unknown type of train"
+      end
+      rescue StandardError => err
+        error_message err
+      retry
     end
     new_train.train_type = train_type
     new_train.man_assign = manufacturer_name
@@ -94,9 +82,9 @@ class MainMenu
   
   def create_change_route # для пункта 3 - создание, изменение маршрута. 
     @routes.each_with_index { |route_list, i| puts "Existing route #{i+1} is #{route_list.display_route}" } if @routes.size > 0 # выводим имеющиеся маршруты
-    print "Enter start station of route: "
+    puts "Enter start station of route: "
     start_station = gets.chomp
-    print "Enter last station of route: "
+    puts "Enter last station of route: "
     end_station = gets.chomp
     new_route = Route.new(start_station, end_station) # создаем на основе класса роут новый маршрут.
     @routes << new_route # записываем его в массив маршрутов 
@@ -104,6 +92,7 @@ class MainMenu
     puts "@routes.route_list = #{new_route.display_route}"
     puts new_route.start_station
     puts new_route.last_station
+
     #@routes.each_with_index { |route, i| route_list[i+1] = route.display_route }
     #@routes.each_with_index { |route, i| puts "#{i+1} - #{@route_display}"} 
     # проверка
@@ -118,11 +107,16 @@ class MainMenu
       break if choice_route == "exit"
       case choice_route
         when "add"
-          print "Enter name of station before: "
-          before_station = gets.chomp
-          print "Enter substation : "
-          substation = gets.chomp
-          new_route.add_station_after(before_station, substation)
+          begin
+            print "Enter name of station before: "
+            before_station = gets.chomp
+            print "Enter substation : "
+            substation = gets.chomp
+            new_route.add_station_after(before_station, substation)
+            rescue StandardError => err # если ошибка, то пишем что в ошибке (в классе Route, что станция существует уже)
+            error_message err
+            retry
+          end
         when "del"
           puts new_route.display_route
           print "Enter name of station to delete: "
@@ -234,7 +228,7 @@ class MainMenu
         when "1" # Создавать станции -----------------------------------
           create_new_station
         when "2" #  Создавать поезда -----------------------------------
-            create_new_train
+          create_new_train
         when "3" #  Создавать маршруты и управлять станциями в нем (добавлять, удалять)
           create_change_route
         when "4" #  Назначать маршрут поезду ---------------------------
@@ -255,7 +249,9 @@ class MainMenu
       end  
   end
   
-  
+  def error_message(err)
+    puts "Error: #{err.message}"
+  end
 
 
   
