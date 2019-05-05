@@ -47,12 +47,27 @@ class MainMenu
     ps3.man_assign = 'GovRails'
 
     carriage1 = CargoCarriage.new
+    carriage2 = CargoCarriage.new
+    
     cr2.carriage_add(carriage1)
-    puts carriage1.occupy_volume
-    carriage1.occupy
-    puts carriage1.occupy_volume
+    cr2.carriage_add(carriage2)
+
     
+    puts carriage1.occupy_volume # сколько занято щас
+    carriage1.occupy(100) # заняли  100 единиц обьема в вагоне 1 
+    puts carriage1.occupy_volume
+    carriage1.occupy(56) # заняли  56 единиц обьема в вагоне 1
+    puts carriage1.occupy_volume
+    carriage1.occupy(124)
+    puts carriage1.occupy_volume
+    carriage1.occupy(108)
+    puts carriage1.occupy_volume
+    carriage2.occupy(108) # заняли  108 единиц обьема в вагоне 2
+    puts cr2.carriages_in_train
     
+    cr2.carriages_in_train.each.with_index(1) { |carriage, i| puts "#{i} carriage has  #{carriage.occupy_volume} occupyed volume"}
+    
+
     @routes << Route.new('a', 'c')
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
     @routes[0].add_station_after('a', 'b')

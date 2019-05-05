@@ -2,7 +2,7 @@ require "./route.rb"
 require "./carriage.rb"
 
 class PassengerCarriage < Carriage # пассажирский вагон - потомок класса вагон
-  
+  attr_reader :places
   attr_accessor :occupy_places
   def initialize
     super
@@ -15,6 +15,7 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
     change_places 
   end
 
+  
   def occupy
     if @occupy_places < @places
     @occupy_places = @places - 1   
@@ -25,7 +26,7 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
 
 private
 
-  def change_places
+  def change_places # метод, изменяющий число мест в вагоне. Написан ранее, когда предполагалось поделить на купе, плацкарт и общий вагон.
     @places = 72 
   end
 

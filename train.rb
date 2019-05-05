@@ -53,7 +53,8 @@ class Train
       puts "Carriage cannot be added! Speed = #{@speed}"
     else
     #  puts carriage 
-      @carriages_in_train << carriage.type_carriage # передаем в хэш значения вагона тип => наполненость
+    @carriages_in_train << carriage # ранее передавали только тип (закоментирована строка ниже), теперь в массив передаем сами обьекты-вагоны. Подразумевается - встал поезд на станции, сел народ в КАЖДЫЙ вагон и отъехал
+    #  @carriages_in_train << carriage.type_carriage # передаем в хэш значения вагона тип => наполненость
     #  puts "Carriage = #{carriage.type_carriage} "
   #    puts "#{carriage.type_carriage} carriage with has been added with  places = #{carriage.places}."
       @carriage_count += 1 
@@ -108,6 +109,10 @@ class Train
     validate!
   rescue
     false
+  end
+
+  def carriages_in_train
+    @carriages_in_train
   end
 
   protected

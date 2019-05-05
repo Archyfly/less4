@@ -9,26 +9,26 @@ attr_accessor :occupy_volume
   def initialize
     super
     @type_carriage = 'cargo'
-    @volume = 20
+    @volume = 350
     @occupy_volume = 0
   end
 
-  def change # вызываем приватный метод, позволяющий менять число мест
+  def change # вызываем приватный метод, позволяющий менять обьем (не пригодился)
     change_volume! 
   end
 
-  def occupy
-    if @occupy_volume < @volume
-      @occupy_volume += 1   
+  def occupy(vol) # занятие переданного обьема vol
+    if @occupy_volume + vol < @volume
+      @occupy_volume = @occupy_volume + vol   
     else
-      @occupy_volume
+      puts "cargo carriage hasn't enough volume!"
     end
   end
 
 private
 
   def change_volume!
-    @volume = 40 
+    @volume = 200 
   end
 
 end
