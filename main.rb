@@ -45,12 +45,18 @@ class MainMenu
     ps1.man_assign = 'PassMan'
     ps2.man_assign = 'GovRails'
     ps3.man_assign = 'GovRails'
+
+    carriage1 = CargoCarriage.new
+    cr2.carriage_add(carriage1)
+    puts carriage1.occupy_volume
+    carriage1.occupy
+    puts carriage1.occupy_volume
+    
     
     @routes << Route.new('a', 'c')
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
     @routes[0].add_station_after('a', 'b')
     @routes[0].display_route
-
     @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} at #{train.position}. " }
   end
 
@@ -75,12 +81,14 @@ class MainMenu
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     puts "----- Stations-----"
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
-    puts "----- Routes-----"
+    puts "----- Routes -----"
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
-    puts "----- Trains-----"
+    puts "----- Trains -----"
     @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer is #{train.man_assign}.  "} 
-    puts "----- Trains on Stations now-----"
+    puts "----- Trains on Stations now -----"
     @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} at #{train.position}. " }
+    #puts "----- Carriages and places -----"
+    #@trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} has #{train.carriage_count} carriages. " }
   end
   
   def stations_all

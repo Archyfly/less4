@@ -3,14 +3,24 @@ require "./carriage.rb"
 
 class PassengerCarriage < Carriage # пассажирский вагон - потомок класса вагон
   
+  attr_accessor :occupy_places
   def initialize
     super
     @type_carriage = 'pass'
-    @places = 46
+    @places = 100
+    @occupy_places = occupy_places
   end
 
   def change # вызываем приватный метод, позволяющий менять число мест
     change_places 
+  end
+
+  def occupy
+    if @occupy_places < @places
+    @occupy_places = @places - 1   
+    else
+      @occupy_places
+    end
   end
 
 private
