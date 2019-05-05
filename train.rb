@@ -21,7 +21,7 @@ class Train
     @train_type = train_type # Тип поезда
     validate!
     @speed = speed # Скорость поезда
-    @position = [] # для движения по маршруту
+    @position = [] << 'Depo' # для движения по маршруту
     @train_pos_now = train_pos_now # хранение текущей позиции
     @carriages_in_train = [] # массив получаемый из вагончиков
     @carriage_count = 0 # более понятная переменная для числа вагончиков
@@ -49,16 +49,16 @@ class Train
   end
 
   def carriage_add(carriage) # получаем тип вагона и количество мест
-    #if @speed != 0 
-  #    puts "Carriage cannot be added! Speed = #{@speed}"
-    #else
+    if @speed != 0 
+      puts "Carriage cannot be added! Speed = #{@speed}"
+    else
     #  puts carriage 
       @carriages_in_train << carriage.type_carriage # передаем в хэш значения вагона тип => наполненость
     #  puts "Carriage = #{carriage.type_carriage} "
   #    puts "#{carriage.type_carriage} carriage with has been added with  places = #{carriage.places}."
       @carriage_count += 1 
     #  puts @carriage_count #проверка что число добавлено
-    
+    end
   end
 
   def position 
@@ -103,7 +103,6 @@ class Train
       puts "Train at the start of route!"
     end
   end
-
 
   def valid?
     validate!

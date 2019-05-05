@@ -59,7 +59,6 @@ class Station
   end
 
 end
-
 #station1 = Station.new('M2')
 #station2 = Station.new('Depo')
 #station2.train_arrived(2)

@@ -26,6 +26,34 @@ class MainMenu
     @number_train
   end
 
+  def test_data
+    @stations << Station.new('first')
+    @stations << Station.new('second')
+    @stations << Station.new('third')
+    @stations << Station.new('fourth')
+    @stations << Station.new('fifth')
+    @stations << Station.new('six')
+    @stations << Station.new('seven')
+
+    @trains << ps1 = PassTrain.new('165-ps')
+    @trains << ps2 = PassTrain.new('185-ps')
+    @trains << ps3 = PassTrain.new('205-ps')
+    @trains << cr1 = CargoTrain.new('700-cr')
+    @trains << cr2 = CargoTrain.new('800-cr')
+    cr1.man_assign = 'CargoFacture'
+    cr2.man_assign = 'LVRZ'
+    ps1.man_assign = 'PassMan'
+    ps2.man_assign = 'GovRails'
+    ps3.man_assign = 'GovRails'
+    
+    @routes << Route.new('a', 'c')
+    @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
+    @routes[0].add_station_after('a', 'b')
+    @routes[0].display_route
+
+    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} at #{train.position}. " }
+  end
+
   def find_train
     puts "Enter number of train: "
     number_train = gets.chomp
@@ -45,9 +73,14 @@ class MainMenu
   end
   
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
+    puts "----- Stations-----"
     @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
+    puts "----- Routes-----"
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
-    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer is #{train.man_assign}"} 
+    puts "----- Trains-----"
+    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} is #{train.train_type}. Train has #{train.carriage_count} carriages. Manufacturer is #{train.man_assign}.  "} 
+    puts "----- Trains on Stations now-----"
+    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} at #{train.position}. " }
   end
   
   def stations_all
@@ -152,8 +185,9 @@ class MainMenu
     puts "route (position list) of train is #{ selected_train.position}"
     puts "position start = #{selected_train.position[0]}"
     puts "position end = #{selected_train.position[-1]}"
+    selected_train.position.delete_at(0)
   end
-
+  
   def move_train_on_assigned_route
     
     puts "Enter train number to move"
@@ -265,10 +299,14 @@ class MainMenu
   def error_message(err)
     puts "Error: #{err.message}"
   end
-
-
-  
 end
 
+
+
+
+
 menu = MainMenu.new  
+menu.test_data
 menu.list
+
+

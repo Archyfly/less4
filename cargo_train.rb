@@ -3,6 +3,6 @@ class CargoTrain < Train # определяем потомка Грузовой 
   
   def initialize(number)
     super
-    @type = 'cargo'
+    @train_type = 'cargo'
   end
 end

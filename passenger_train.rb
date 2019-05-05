@@ -3,7 +3,7 @@ class PassTrain < Train
   #include Manufacturer
   def initialize(number)
     super
-    @type = 'pass'
+    @train_type = 'pass'
   end
 
 end
