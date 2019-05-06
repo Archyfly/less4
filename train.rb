@@ -34,6 +34,9 @@ class Train
   #def display_train_info# общие параметры отображения class Train 
   #  puts "Train #{@number}. Type of train: #{@train_type}. Train has speed #{@speed}"
   #end
+  def carriages_view(train)
+    carriages_in_train
+  end    
 
   def brake # общее торможение поезда
     @speed = 0
@@ -57,7 +60,7 @@ class Train
     #  @carriages_in_train << carriage.type_carriage # передаем в хэш значения вагона тип => наполненость
     #  puts "Carriage = #{carriage.type_carriage} "
   #    puts "#{carriage.type_carriage} carriage with has been added with  places = #{carriage.places}."
-      @carriage_count += 1 
+    @carriage_count += 1 
     #  puts @carriage_count #проверка что число добавлено
     end
   end

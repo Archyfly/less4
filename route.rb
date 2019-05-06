@@ -38,7 +38,8 @@ class Route
   end
 
   def route_name # для определения маршрута по имени в формате first-last
-    @name = route_list.first + "-" + route_list.last
+    #@name = route_list.first.name + "-" + route_list.last
+    @name = start_station.station_name + "-" + last_station.station_name
   end
 
 end

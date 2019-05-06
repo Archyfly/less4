@@ -27,30 +27,30 @@ class MainMenu
   end
 
   def test_data
-    @stations << Station.new('first')
-    @stations << Station.new('second')
-    @stations << Station.new('third')
-    @stations << Station.new('fourth')
-    @stations << Station.new('fifth')
-    @stations << Station.new('six')
-    @stations << Station.new('seven')
+    @stations << st1 = Station.new('fir')
+    @stations << st2 = Station.new('sec')
+    @stations << st3 = Station.new('thr')
+    #@stations << st4 = Station.new('fou')
+    #@stations << st5 = Station.new('fif')
+    #@stations << st6 = Station.new('six')
+    #@stations << st7 = Station.new('sev')
 
     @trains << ps1 = PassTrain.new('165-ps')
-    @trains << ps2 = PassTrain.new('185-ps')
-    @trains << ps3 = PassTrain.new('205-ps')
-    @trains << cr1 = CargoTrain.new('700-cr')
-    @trains << cr2 = CargoTrain.new('800-cr')
+    #@trains << ps2 = PassTrain.new('185-ps')
+    #@trains << ps3 = PassTrain.new('205-ps')
+    @trains << cr1 = CargoTrain.new('77777')
+    #@trains << cr2 = CargoTrain.new('800-cr')
     cr1.man_assign = 'CargoFacture'
-    cr2.man_assign = 'LVRZ'
+    #cr2.man_assign = 'LVRZ'
     ps1.man_assign = 'PassMan'
-    ps2.man_assign = 'GovRails'
-    ps3.man_assign = 'GovRails'
+    #ps2.man_assign = 'GovRails'
+    #ps3.man_assign = 'GovRails'
 
     carriage1 = CargoCarriage.new
     carriage2 = CargoCarriage.new
     
-    cr2.carriage_add(carriage1)
-    cr2.carriage_add(carriage2)
+    cr1.carriage_add(carriage1)
+    cr1.carriage_add(carriage2)
 
     
     puts carriage1.occupy_volume # сколько занято щас
@@ -62,17 +62,16 @@ class MainMenu
     puts carriage1.occupy_volume
     carriage1.occupy(108)
     puts carriage1.occupy_volume
-    carriage2.occupy(108) # заняли  108 единиц обьема в вагоне 2
-    puts cr2.carriages_in_train
     
-    cr2.carriages_in_train.each.with_index(1) { |carriage, i| puts "#{i} carriage has  #{carriage.occupy_volume} occupyed volume"}
+    
+    cr1.carriages_in_train.each.with_index(1) { |carriage, i| puts "#{i} carriage has  #{carriage.occupy_volume} occupyed volume"}
     
 
-    @routes << Route.new('a', 'c')
-    @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
-    @routes[0].add_station_after('a', 'b')
-    @routes[0].display_route
-    @trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} at #{train.position}. " }
+    @routes << Route.new(st1, st3)
+    #@routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
+    #@routes[0].add_station_after('a', 'b')
+    #@routes[0].display_route
+    #@trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} at #{train.position}. " }
   end
 
   def find_train
@@ -95,7 +94,7 @@ class MainMenu
   
   def view_stations_routes_and_trains # для пункта 8, отображение всего что наделано
     puts "----- Stations-----"
-    @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
+    @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}. Trains on station is #{station.display_trains_on_station}"}
     puts "----- Routes -----"
     @routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
     puts "----- Trains -----"
@@ -136,18 +135,27 @@ class MainMenu
   end
   
   def create_change_route # для пункта 3 - создание, изменение маршрута. 
-    @routes.each_with_index { |route_list, i| puts "Existing route #{i+1} is #{route_list.display_route}" } if @routes.size > 0 # выводим имеющиеся маршруты
-    puts "Enter start station of route: "
-    start_station = gets.chomp
-    puts "Enter last station of route: "
-    end_station = gets.chomp
-    new_route = Route.new(start_station, end_station) # создаем на основе класса роут новый маршрут.
-    @routes << new_route # записываем его в массив маршрутов 
-    puts "@routes = #{@routes}"
-    puts "@routes.route_list = #{new_route.display_route}"
-    puts new_route.start_station
-    puts new_route.last_station
+      @routes.each_with_index { |route_list, i| puts "Existing route #{i+1} is #{route_list.display_route}" } if @routes.size > 0 # выводим имеющиеся маршруты
+      puts "Choice stations for create new route from list below: "
+      @stations.each.with_index(1) { |station, i| puts "Station #{i} - #{station.station_name}"}
+      puts "Enter start station of route: "
+      start_st = gets.chomp
+      start_station = find_station(start_st)
+      puts "Enter last station of route: "
+      end_st = gets.chomp
+      end_station = find_station(end_st)
+      
+      # def find_station(station_name) # ищем станцию по имени
+      #@stations.find { |station| station.station_name == station_name }
+      #end
 
+      new_route = Route.new(start_station, end_station) # создаем на основе класса роут новый маршрут.
+      @routes << new_route # записываем его в массив маршрутов 
+      puts "@routes = #{@routes}"
+      puts "@routes.route_list = #{new_route.display_route}"
+      puts new_route.start_station
+      puts new_route.last_station
+    
     #@routes.each_with_index { |route, i| route_list[i+1] = route.display_route }
     #@routes.each_with_index { |route, i| puts "#{i+1} - #{@route_display}"} 
     # проверка
@@ -164,9 +172,11 @@ class MainMenu
         when "add"
           begin
             print "Enter name of station before: "
-            before_station = gets.chomp
+            bef_station = gets.chomp
+            before_station = find_station(bef_station)
             print "Enter substation : "
-            substation = gets.chomp
+            subst = gets.chomp
+            substation = find_station(substation)
             new_route.add_station_after(before_station, substation)
             rescue StandardError => err # если ошибка, то пишем что в ошибке (в классе Route, что станция существует уже)
             error_message err
@@ -199,16 +209,22 @@ class MainMenu
     assign_route = gets.chomp
     
     selected_train = find_train_number(assign_train) # ищем поезд по номеру
-    selected_route = find_route_by_name(assign_route) # ищем маршрут по номеру
+    selected_route = find_route_by_name(assign_route) # ищем маршрут по имени
 
     puts "Selected train = #{selected_train}"
     puts "Selected route = #{selected_route}"
 
     selected_train.train_on_route(assign_train, selected_route.route_list)
-    puts "route (position list) of train is #{ selected_train.position}"
-    puts "position start = #{selected_train.position[0]}"
-    puts "position end = #{selected_train.position[-1]}"
-    selected_train.position.delete_at(0)
+   # @stations.train_arrived(selected_train)
+    selected_route.route_list[0].train_departure(selected_train) # выехал из депо
+    selected_train.position.delete_at(0) # убираем депо из маршрута (хотя можно оставить, тогда выехал из депо и приехал в депо)
+    selected_route.route_list[0].train_arrived(selected_train) # приехал на первую станцию
+    #puts " !!!!!!! - #{selected_route.route_list[0].train_arrived(selected_train)}" # поезд должен прибыть на 1 станцию в маршруте, а он падла в депо.
+    
+    #puts "route (position list) of train is #{ selected_train.position}"
+    puts "position start = #{selected_train.position[0].station_name}"
+    puts "position end = #{selected_train.position[-1].station_name}"
+    
   end
   
   def move_train_on_assigned_route
@@ -264,6 +280,13 @@ class MainMenu
     end
   end  
      
+  def view_carriages
+    puts "Enter number of train to view carriages"
+    number_train = gets.chomp
+    selected_train = find_train_number(number_train) # метод поиска поезда по номеру find_train_number, поезд у которого убираем вагон, добавить проверку количества вагонов carriage_count
+    puts selected_train.carriages_view(selected_train)
+  end  
+
   def find_train_number(number_train) # вспомогательный метод, часто
     @trains.find { |train| train.number == number_train }
     #puts @trains.find { |train| train.number == number_train } 
@@ -291,6 +314,7 @@ class MainMenu
       puts "8 - display stations and trains on station" #  Просматривать список станций и список поездов на станции
       puts "9 - display stations objects" #  Отобразить станции объектами
       puts "10 - find train by number " # Возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
+      puts "11 - View carriages in train "
       puts "0 - EXIT"
       choice = gets.chomp
       break if choice == "0"
@@ -314,7 +338,9 @@ class MainMenu
         when "9" #  Отобразить станции объектами
           stations_all
         when "10"
-          find_train            
+          find_train
+        when "11"
+          view_carriages           
         end
       end  
   end

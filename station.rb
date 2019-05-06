@@ -35,9 +35,10 @@ class Station
     @name
   end
   
-  #def display_trains_on_station
-  #	puts "Train on station now is: #{@train_on_station}"
-  #end
+  
+  def display_trains_on_station
+  	@train_on_station
+  end
   
   def train_arrived(train)
   #  puts "Train arrived on the station #{@name}"
