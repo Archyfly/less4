@@ -35,7 +35,7 @@ class Train
   #  puts "Train #{@number}. Type of train: #{@train_type}. Train has speed #{@speed}"
   #end
   def carriages_view(train)
-    carriages_in_train
+    @carriages_in_train.each {|carriage| puts " #{carriage.type_carriage}" }
   end    
 
   def brake # общее торможение поезда
