@@ -21,7 +21,7 @@ class Train
     @train_type = train_type # Тип поезда
     validate!
     @speed = speed # Скорость поезда
-    @position = [] << 'Depo' # для движения по маршруту
+    @position = [] # для движения по маршруту
     @train_pos_now = train_pos_now # хранение текущей позиции
     @carriages_in_train = [] # массив получаемый из вагончиков
     @carriage_count = 0 # более понятная переменная для числа вагончиков
@@ -34,9 +34,6 @@ class Train
   #def display_train_info# общие параметры отображения class Train 
   #  puts "Train #{@number}. Type of train: #{@train_type}. Train has speed #{@speed}"
   #end
-  def carriages_view(train)
-    @carriages_in_train.each {|carriage| puts " #{carriage.type_carriage}" }
-  end    
 
   def brake # общее торможение поезда
     @speed = 0
@@ -52,17 +49,16 @@ class Train
   end
 
   def carriage_add(carriage) # получаем тип вагона и количество мест
-    if @speed != 0 
-      puts "Carriage cannot be added! Speed = #{@speed}"
-    else
+    #if @speed != 0 
+  #    puts "Carriage cannot be added! Speed = #{@speed}"
+    #else
     #  puts carriage 
-    @carriages_in_train << carriage # ранее передавали только тип (закоментирована строка ниже), теперь в массив передаем сами обьекты-вагоны. Подразумевается - встал поезд на станции, сел народ в КАЖДЫЙ вагон и отъехал
-    #  @carriages_in_train << carriage.type_carriage # передаем в хэш значения вагона тип => наполненость
+      @carriages_in_train << carriage # передаем в массив значения вагона тип => наполненость
     #  puts "Carriage = #{carriage.type_carriage} "
   #    puts "#{carriage.type_carriage} carriage with has been added with  places = #{carriage.places}."
-    @carriage_count += 1 
+      @carriage_count += 1 
     #  puts @carriage_count #проверка что число добавлено
-    end
+    
   end
 
   def position 
@@ -107,6 +103,10 @@ class Train
       puts "Train at the start of route!"
     end
   end
+  
+  def carriages_in_train
+    @carriages_in_train
+  end
 
   def valid?
     validate!
@@ -114,9 +114,21 @@ class Train
     false
   end
 
-  def carriages_in_train
-    @carriages_in_train
+  def carriages_view(train) # блок проходит по вагонам и смотрит тип и место в вагоне
+    @carriages_in_train.each.with_index(1) do |carriage, i| 
+      puts "Type of carriage #{carriage.type_carriage}. " 
+      if carriage.type_carriage == 'pass'
+         puts "Carriage #{i} has #{carriage.places} with #{carriage.occupy_places} occupied places"
+      elsif carriage.type_carriage == 'cargo'
+        puts "Carriage #{i} has #{carriage.volume} volume with #{carriage.occupy_volume} occupied volume"
+      else
+      puts "Train #{train_number(train)} hasn't carriages"      
+      end
+    end  
   end
+          
+            
+  
 
   protected
 

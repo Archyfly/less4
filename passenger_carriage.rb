@@ -8,7 +8,7 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
     super
     @type_carriage = 'pass'
     @places = 100
-    @occupy_places = occupy_places
+    @occupy_places = 0
   end
 
   def change # вызываем приватный метод, позволяющий менять число мест
@@ -16,9 +16,9 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
   end
 
   
-  def occupy
-    if @occupy_places < @places
-    @occupy_places = @places - 1   
+  def occupy(place)
+    if @occupy_places + place < @places
+    @occupy_places = @occupy_places + place    
     else
       @occupy_places
     end

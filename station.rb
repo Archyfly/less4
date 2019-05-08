@@ -21,7 +21,6 @@ class Station
     register_instance #из InstanceCounter 
     @@count += 1
     @@existing_stations << self 
-    
   end
   
   def validate?
@@ -35,10 +34,9 @@ class Station
     @name
   end
   
-  
-  def display_trains_on_station
-  	@train_on_station
-  end
+  #def display_trains_on_station
+  #	puts "Train on station now is: #{@train_on_station}"
+  #end
   
   def train_arrived(train)
   #  puts "Train arrived on the station #{@name}"
@@ -60,6 +58,7 @@ class Station
   end
 
 end
+
 #station1 = Station.new('M2')
 #station2 = Station.new('Depo')
 #station2.train_arrived(2)
