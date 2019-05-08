@@ -276,11 +276,14 @@ class MainMenu
     end
   end
 
-  def carriage_view_info
+ def carriage_view_info
     #puts "Enter number of train to delete carriage"
     #number_train = gets.chomp
     #train = find_train_number(number_train)
-    @trains.each {|train| train.carriages_view(train) }
+    @trains.each {|train| 
+      puts "Train #{train.train_number(train)} has this carriages: " 
+      train.carriages_view(train)
+    }
   end
   
   def find_train_number(number_train) # вспомогательный метод, часто
@@ -311,7 +314,7 @@ class MainMenu
       puts "9 - display stations and trains on station" #  Просматривать список станций и список поездов на станции
       puts "10 - display stations objects" #  Отобразить станции объектами
       puts "11 - find train by number " # Возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
-
+      puts "12 - View carriages in trains"
       puts "15 - create test data - trains, carriages, stations and routes"
       puts "0 - EXIT"
       choice = gets.chomp
