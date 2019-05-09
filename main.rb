@@ -26,63 +26,49 @@ class MainMenu
     @number_train
   end
 
-   def test_data
-    @stations << st1 = Station.new('fir')
+   def test_data # пункт 15 - создать тестовые данные
+    # создаем станции
+    @stations << st1 = Station.new('fir')  
     @stations << st2 = Station.new('sec')
     @stations << st3 = Station.new('thr')
     @stations << st4 = Station.new('fou')
     @stations << st5 = Station.new('fif')
-    #@stations << st6 = Station.new('six')
-    #@stations << st7 = Station.new('sev')
 
+    # создаем поезда
     @trains << ps1 = PassTrain.new('165-ps')
-    #@trains << ps2 = PassTrain.new('185-ps')
-    #@trains << ps3 = PassTrain.new('205-ps')
     @trains << cr1 = CargoTrain.new('77777')
-    #@trains << cr2 = CargoTrain.new('800-cr')
+   
+    # назначаем поездам производителя
     cr1.man_assign = 'CargoFacture'
-    #cr2.man_assign = 'LVRZ'
     ps1.man_assign = 'PassMan'
-    #ps2.man_assign = 'GovRails'
-    #ps3.man_assign = 'GovRails'
-
+   
+    # создаем вагончики (2 для грузового поезда)
     carriage1 = CargoCarriage.new
     carriage2 = CargoCarriage.new
     
+    # добавляем вагончики поезду (груз)
     cr1.carriage_add(carriage1)
     cr1.carriage_add(carriage2)
-
+    
+    # создаем вагончики (2 для пассажирского поезда)  
     carriage3 = PassengerCarriage.new
     carriage4 = PassengerCarriage.new
     
+    # добавляем вагончики поезду (пасс)
     ps1.carriage_add(carriage3)
     ps1.carriage_add(carriage4)
 
-    #puts carriage1.occupy_volume # сколько занято щас
-    #carriage1.occupy(100) # заняли  100 единиц обьема в вагоне 1 
-    #puts carriage1.occupy_volume
-    #carriage1.occupy(56) # заняли  56 единиц обьема в вагоне 1
-    #puts carriage1.occupy_volume
-    #carriage1.occupy(124)
-    #puts carriage1.occupy_volume
+    # заполняем вагончики грузом и людьми
     carriage1.occupy(108)
-    #puts carriage1.occupy_volume
-    
     carriage2.occupy(32)
     carriage3.occupy(15)
     carriage4.occupy(75)
     
-       
-
-    
-    #cr1.carriages_in_train.each.with_index(1) { |carriage, i| puts "#{i} carriage has  #{carriage} occupyed volume"}
-    
-
-    @routes << Route.new('fir', 'thr')
-    #@routes.each.with_index(1) { |route, i| puts "#{i} route - #{route.route_name} "}
-    #@routes[0].add_station_after('a', 'b')
-    #@routes[0].display_route
-    #@trains.each.with_index(1) { |train, i| puts "#{i} - Train number #{train.number} at #{train.position}. " }
+    # создаем маршрут
+    @routes << r1 = Route.new('fir', 'fif')
+    r1.add_station_after('fir', 'sec')
+    r1.add_station_after('sec', 'thr')
+    r1.add_station_after('thr', 'fou')
   end
 
   def find_train
@@ -169,33 +155,31 @@ class MainMenu
       puts "Type 'display' for display full route"
       puts "Type 'exit' for return to MainMenu"
       choice_route = gets.chomp
-      break if choice_route == "exit"
-      case choice_route
-        when "add"
-          begin
-            print "Enter name of station before: "
-            before_station = gets.chomp
-            print "Enter substation : "
-            substation = gets.chomp
-            selected_route.add_station_after(before_station, substation)
-            rescue StandardError => err # если ошибка, то пишем что в ошибке (в классе Route, что станция существует уже)
+    break if choice_route == "exit"
+    case choice_route
+      when "add"
+        begin
+          print "Enter name of station before: "
+          before_station = gets.chomp
+          print "Enter substation : "
+          substation = gets.chomp
+          selected_route.add_station_after(before_station, substation)
+        rescue StandardError => err # если ошибка, то пишем что в ошибке (в классе Route, что станция существует уже)
             error_message err
-            retry
-          end
-        when "del"
-          begin 
+        retry
+        end
+      when "del"
+        begin 
           puts selected_route.display_route
           print "Enter name of station to delete: "
           del_station = gets.chomp
           selected_route.del_station_from_route(del_station)
-            rescue StandardError => err # если ошибка, то пишем что в ошибке (в классе Route, что станция существует уже)
-            error_message err
-            retry
-          end
-        when "display"
-          @routes.each_with_index { |route, i| puts "Route #{i+1} - #{route.route_list}"} # вывод полного маршрута с изменениями
-          #@routes.each_with_index { |route, i| @routes_list[i+1] = route.display_route}
-          #puts @routes
+        rescue StandardError => err # если ошибка, то пишем что в ошибке (в классе Route, что станция существует уже)
+          error_message err
+          retry
+        end
+      when "display"
+        @routes.each_with_index { |route, i| puts "Route #{i+1} - #{route.route_list}"} # вывод полного маршрута с изменениями
       end 
     end
     else
@@ -224,21 +208,32 @@ class MainMenu
   end
 
   def move_train_on_assigned_route
-    
     puts "Enter train number to move"
     number_train = gets.chomp
-    
     move_train = find_train_number(number_train)
-    loop do
-      puts "Enter 'next' for move train to next station or 'prev' for move train to previos station, or Enter 'stop' for stop move: "
-      choice_move = gets.chomp
-      break if choice_move == "stop"
-      if choice_move == "next"
-        move_train.train_go_to_next(number_train, move_train.position)
-      end
-      if choice_move == "prev"
-        move_train.train_go_to_previous(number_train, move_train.position)
-      end
+   # loop do
+    puts "Train #{move_train.number} now on station #{move_train.position[move_train.train_pos_now]}"
+    puts "Enter 'next' for move train to next station or 'prev' for move train to previos station, or Enter 'stop' for stop move: "
+    choice_move = gets.chomp
+      #break if choice_move == "stop"
+    if choice_move == "next" && move_train.position[move_train.train_pos_now+1] != nil
+      move_train.train_go_to_next(number_train, move_train.position)
+    end
+
+    if choice_move == "prev" && move_train.train_pos_now > 0
+      move_train.train_go_to_previous(number_train, move_train.position)
+    end
+
+    puts "Train #{move_train.number} now on station #{move_train.position[move_train.train_pos_now]}"
+    if move_train.position[move_train.train_pos_now+1] == nil
+      puts "Train on last station" 
+      puts "Previos station is #{ move_train.position[move_train.train_pos_now-1]}"
+    elsif  move_train.train_pos_now == 0
+      puts "Train on start station" 
+      puts "Next station is #{ move_train.position[move_train.train_pos_now+1]}" 
+    else
+      puts "Next station is #{ move_train.position[move_train.train_pos_now+1]}"
+      puts "Previos station is #{ move_train.position[move_train.train_pos_now-1]}"
     end
   end
  
@@ -249,15 +244,15 @@ class MainMenu
     train = find_train_number(train_number) # метод поиска поезда по номеру find_train_number, поезд к которому хотим добавить вагон
     if train.speed != 0 
       puts "Carriage cannot be added! Speed = #{@speed}"
-      elsif train.train_type == 'cargo' 
-        carriage = CargoCarriage.new
-        train.carriage_add(carriage)
-        puts "Train #{train_number} has #{train.carriage_count} carriages"
-      elsif train.train_type == 'pass'
-        carriage = PassengerCarriage.new
-        train.carriage_add(carriage)
-        puts "Train #{train_number} has #{train.carriage_count} carriages"
-      else
+    elsif train.train_type == 'cargo' 
+      carriage = CargoCarriage.new
+      train.carriage_add(carriage)
+      puts "Train #{train_number} has #{train.carriage_count} carriages"
+    elsif train.train_type == 'pass'
+      carriage = PassengerCarriage.new
+      train.carriage_add(carriage)
+      puts "Train #{train_number} has #{train.carriage_count} carriages"
+    else
       puts "Train not found!"
     end
   end
@@ -268,10 +263,10 @@ class MainMenu
     train = find_train_number(number_train) # метод поиска поезда по номеру find_train_number, поезд у которого убираем вагон, добавить проверку количества вагонов carriage_count
     if train.speed != 0 
       puts "Train on route. Speed = #{train.speed}"  
-      elsif train.carriage_count > 0
+    elsif train.carriage_count > 0
       train.carriage_del
       puts "Carriage has been deleted. Train has #{train.carriage_count} railway_carriages now."         
-      else          
+    else          
       puts "Carriage hasn't railway_carriages."         
     end
   end
@@ -281,8 +276,8 @@ class MainMenu
     #number_train = gets.chomp
     #train = find_train_number(number_train)
     @trains.each {|train| 
-      puts "Train #{train.train_number(train)} has this carriages: " 
-      train.carriages_view(train)
+    puts "Train #{train.train_number(train)} has this carriages: " 
+    train.carriages_view(train)
     }
   end
   

@@ -27,7 +27,7 @@ class Station
     validate!
     rescue StandardError
     false
-  retry
+    retry
   end
 
   def station_name

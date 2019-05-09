@@ -11,7 +11,8 @@ class Train
   @@existing_trains = {} # сюда записываем созданные экземпляры поездов
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
-  
+  attr_reader :train_pos_now
+
   def self.find(number_train)
     @@existing_trains[number_train]
   end
@@ -49,16 +50,12 @@ class Train
   end
 
   def carriage_add(carriage) # получаем тип вагона и количество мест
-    #if @speed != 0 
-  #    puts "Carriage cannot be added! Speed = #{@speed}"
-    #else
-    #  puts carriage 
+    if @speed != 0 
+      puts "Carriage cannot be added! Speed = #{@speed}"
+    else
       @carriages_in_train << carriage # передаем в массив значения вагона тип => наполненость
-    #  puts "Carriage = #{carriage.type_carriage} "
-  #    puts "#{carriage.type_carriage} carriage with has been added with  places = #{carriage.places}."
       @carriage_count += 1 
-    #  puts @carriage_count #проверка что число добавлено
-    
+    end
   end
 
   def position 
@@ -68,7 +65,7 @@ class Train
   def carriage_del 
     @carriage_count = @carriage_count - 1
   end
-
+  
   def train_on_route(number, station) # получаем маршрут - массив из route
     station.each { |stat| @position << stat } # переписываем маршрут в position для дальнейшей работы
     #puts "Train #{@number} arrived at #{@position[0]}"
@@ -79,29 +76,19 @@ class Train
   end
   
   def train_go_to_next(number, station) #поезд перемещается на следующую станцию, выводим куда пеерместился.
-    if @position[@train_pos_now] != @position[-1]
-      @train_pos_now += 1
-      puts "Location of train is #{ @position[@train_pos_now]}"
-      next_stat = @position[@train_pos_now+1] #смотрим следующую станцию
-      prev_stat = @position[@train_pos_now-1] #смотрим предыдущую станцию
-      puts "Next station is #{next_stat}"
-      puts "Previous station is #{prev_stat}"
-    else 
-      puts "Train on last station!"
-    end
+    @train_pos_now += 1
+    #puts "station: #{station}"
+    #self.position[train_pos_now]
+    #puts "@train_pos_now += 1 = #{ @train_pos_now}"
+    #puts "@position[train_pos_now] = #{@position[@train_pos_now]}"
   end
     
   def train_go_to_previous(number, station) #поезд перемещается на предыдущую станцию, выводим куда пеерместился.
-    if @train_pos_now > 0
-      @train_pos_now -= 1
-      puts "Location of train is  #{ @position[@train_pos_now]}"
-      next_stat = @position[@train_pos_now+1] #смотрим следующую станцию
-      prev_stat = @position[@train_pos_now-1] #смотрим предыдущую станцию
-      puts "Next station is #{next_stat}"
-      puts "Previous station is #{prev_stat}"
-    else 
-      puts "Train at the start of route!"
-    end
+    @train_pos_now -= 1
+    #puts "station: #{station}"
+    #self.position[train_pos_now]
+    #puts "@train_pos_now -= 1 = #{ @train_pos_now}"
+    #puts "@position[train_pos_now] = #{@position[@train_pos_now]}"
   end
   
   def carriages_in_train
@@ -126,10 +113,7 @@ class Train
       end
     end  
   end
-          
-            
   
-
   protected
 
   def validate!
