@@ -3,7 +3,7 @@ require "./manufacturer.rb"
 
 class Carriage # класс вагон
 include Manufacturer
-attr_accessor :type_carriage, :places
+attr_accessor :type_carriage, :places, :volume
   
   def carriage_display_info
     puts "carriage type = #{@type_carriage}" # тип вагончика

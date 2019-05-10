@@ -3,14 +3,14 @@ require_relative "./carriage.rb"
 
 class CargoCarriage < Carriage # грузовой вагон
 
-attr_reader :volume
-attr_accessor :occupy_volume 
+attr_accessor :volume, :occupy_volume 
 
   def initialize
     super
     @type_carriage = 'cargo'
-    @volume = 350
+    @volume = volume
     @occupy_volume = 0
+  
   end
 
   def change # вызываем приватный метод, позволяющий менять обьем (не пригодился)

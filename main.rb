@@ -59,10 +59,10 @@ class MainMenu
     ps1.carriage_add(carriage4)
 
     # заполняем вагончики грузом и людьми
-    carriage1.occupy(108)
-    carriage2.occupy(32)
-    carriage3.occupy(15)
-    carriage4.occupy(75)
+    carriage1.volume = 20
+    carriage2.volume = 30
+    carriage3.places = 70
+    carriage4.places = 50  
     
     # создаем маршрут
     @routes << r1 = Route.new('fir', 'fif')
@@ -253,11 +253,18 @@ class MainMenu
     puts train.type
     if train.speed != 0 
       puts "Carriage cannot be added! Speed = #{@speed}"
-    elsif train.type == 'cargo' 
+    elsif train.type == 'cargo'
+      puts "Enter volume of carriage"
+      vol = gets.chomp.to_i 
       carriage = CargoCarriage.new
+      carriage.volume = vol
       train.carriage_add(carriage)
       puts "Train #{train.train_number(train)} has #{train.carriage_count} carriages"
     elsif train.type == 'pass'
+      puts "Enter count of places in carriage"
+      count_places = gets.chomp.to_i 
+      carriage.places = count_places
+      train.carriage_add(carriage)
       carriage = PassengerCarriage.new
       train.carriage_add(carriage)
       puts "Train #{train.train_number(train)} has #{train.carriage_count} carriages"
@@ -326,6 +333,7 @@ class MainMenu
       puts "10 - display stations objects" #  Отобразить станции объектами
       puts "11 - find train by number " # Возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
       puts "12 - View carriages in trains"
+      puts "13 - View trains on stations"
       puts "15 - create test data - trains, carriages, stations and routes"
       puts "0 - EXIT"
       choice = gets.chomp

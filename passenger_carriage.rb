@@ -7,7 +7,7 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
   def initialize
     super
     @type_carriage = 'pass'
-    @places = 100
+    @places = places
     @occupy_places = 0
   end
 
