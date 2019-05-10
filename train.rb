@@ -11,7 +11,7 @@ class Train
   @@existing_trains = {} # сюда записываем созданные экземпляры поездов
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
-  attr_reader :train_pos_now
+  attr_reader :train_pos_now, :train_type
 
   def self.find(number_train)
     @@existing_trains[number_train]

@@ -1,6 +1,8 @@
 require "./train.rb"
 class PassTrain < Train
   #include Manufacturer
+  attr_reader :type 
+
   def initialize(number)
     super
     @type = 'pass'

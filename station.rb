@@ -50,6 +50,12 @@ class Station
   #  puts "Trains on the station now is #{@train_on_station}"
   end
 
+  def trains_view(station) 
+    @train_on_station.each do |train|
+    puts train.number
+    end
+  end
+
   protected
 
   def validate!

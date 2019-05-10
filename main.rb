@@ -201,7 +201,13 @@ class MainMenu
     puts "Selected train = #{selected_train}"
     puts "Selected route = #{selected_route}"
 
-    selected_train.train_on_route(assign_train, selected_route.route_list)
+    selected_train.train_on_route(assign_train, selected_route.route_list) 
+    
+
+    set_stat = find_station(selected_train.position[0]) # находим станцию по имени в маршруте и определяем прибытие на эту станцию.
+
+    set_stat.train_arrived(selected_train) # поезд прибыл на первую станцию. (это нужно для заполнения массива train_on_station)
+
     puts "route (position list) of train is #{ selected_train.position}"
     puts "position start = #{selected_train.position[0]}"
     puts "position end = #{selected_train.position[-1]}"
@@ -238,20 +244,23 @@ class MainMenu
   end
  
 
-  def carriage_add_to_train # для пункта 5 - добавляем вагон, методы создать вагон и добавить вагон описаны в трэйн (в нем сравнить)
+  def carriage_add_to_train # для пункта 6 - добавляем вагон, методы создать вагон и добавить вагон описаны в трэйн (в нем сравнить)
     puts "Enter number of train to add carriage"
-    train_number = gets.chomp
-    train = find_train_number(train_number) # метод поиска поезда по номеру find_train_number, поезд к которому хотим добавить вагон
+    number_train = gets.chomp
+    train = find_train_number(number_train) # метод поиска поезда по номеру find_train_number, поезд к которому хотим добавить вагон
+    puts train
+    puts train.speed
+    puts train.type
     if train.speed != 0 
       puts "Carriage cannot be added! Speed = #{@speed}"
-    elsif train.train_type == 'cargo' 
+    elsif train.type == 'cargo' 
       carriage = CargoCarriage.new
       train.carriage_add(carriage)
-      puts "Train #{train_number} has #{train.carriage_count} carriages"
-    elsif train.train_type == 'pass'
+      puts "Train #{train.train_number(train)} has #{train.carriage_count} carriages"
+    elsif train.type == 'pass'
       carriage = PassengerCarriage.new
       train.carriage_add(carriage)
-      puts "Train #{train_number} has #{train.carriage_count} carriages"
+      puts "Train #{train.train_number(train)} has #{train.carriage_count} carriages"
     else
       puts "Train not found!"
     end
@@ -278,6 +287,13 @@ class MainMenu
     @trains.each {|train| 
     puts "Train #{train.train_number(train)} has this carriages: " 
     train.carriages_view(train)
+    }
+  end
+
+  def view_trains_on_station
+    @stations.each { |station| 
+      puts "On station #{station.station_name} train is:"
+      station.trains_view(station)
     }
   end
   
@@ -339,7 +355,8 @@ class MainMenu
           find_train            
         when "12"
           carriage_view_info
-         
+        when "13"
+          view_trains_on_station
         when "15"
           self.test_data
           
