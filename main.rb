@@ -307,7 +307,7 @@ class MainMenu
     @stations.each do |station|
       puts "Station #{station.station_name} has this trains: "
       station.trains_view do |train|
-        puts "Train #{train.number} witn #{train.carriages_view}"
+        puts "Train number #{train.number} witn #{train.carriages_in_train.size} carrriages.  "
       end
     end
   end
