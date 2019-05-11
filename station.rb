@@ -50,7 +50,7 @@ class Station
   #  puts "Trains on the station now is #{@train_on_station}"
   end
 
-  def trains_view 
+  def trains_view # получаем поезда на станции, передаем в блок 
     @train_on_station.each { |train| yield(train) } if block_given?
   end
   

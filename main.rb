@@ -287,14 +287,13 @@ class MainMenu
     end
   end
 
- def carriage_view_info
-    #puts "Enter number of train to delete carriage"
-    #number_train = gets.chomp
-    #train = find_train_number(number_train)
-    @trains.each {|train| 
+  def carriage_view_info
+    @trains.each do |train| 
     puts "Train #{train.train_number(train)} has this carriages: " 
-    train.carriages_view(train)
-    }
+      train.carriages_view do |carriage|
+      puts "#{carriage.type_carriage}"
+      end
+    end
   end
 
   # def view_trains_on_station
@@ -307,7 +306,7 @@ class MainMenu
     @stations.each do |station|
       puts "Station #{station.station_name} has this trains: "
       station.trains_view do |train|
-        puts "Train number #{train.number} witn #{train.carriages_in_train.size} carrriages.  "
+        puts "Train number #{train.number} type: #{train.type} with #{train.carriages_in_train.size} carriages.  "
       end
     end
   end

@@ -11,7 +11,7 @@ class Train
   @@existing_trains = {} # сюда записываем созданные экземпляры поездов
   
   attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
-  attr_reader :train_pos_now, :train_type
+  attr_reader :train_pos_now
 
   def self.find(number_train)
     @@existing_trains[number_train]
@@ -91,27 +91,18 @@ class Train
     #puts "@position[train_pos_now] = #{@position[@train_pos_now]}"
   end
   
-  def carriages_in_train
+  def carriages_in_train # возвращает массив вагонов
     @carriages_in_train
+  end
+
+  def carriages_view
+    @carriages_in_train.each { |carriage| yield(carriage) }# блок проходит по вагонам и смотрит тип и место в вагоне
   end
 
   def valid?
     validate!
   rescue
     false
-  end
-
-  def carriages_view(train) # блок проходит по вагонам и смотрит тип и место в вагоне
-    @carriages_in_train.each.with_index(1) do |carriage, i| 
-      puts "Type of carriage #{carriage.type_carriage}. " 
-      if carriage.type_carriage == 'pass'
-         puts "Carriage #{i} has #{carriage.places} with #{carriage.occupy_places} occupied places"
-      elsif carriage.type_carriage == 'cargo'
-        puts "Carriage #{i} has #{carriage.volume} volume with #{carriage.occupy_volume} occupied volume"
-      else
-      puts "Train #{train_number(train)} hasn't carriages"      
-      end
-    end  
   end
   
   protected

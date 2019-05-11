@@ -18,7 +18,7 @@ class PassengerCarriage < Carriage # пассажирский вагон - по�
   
   def occupy(place)
     if @occupy_places + place < @places
-    @occupy_places = @occupy_places + place    
+      @occupy_places = @occupy_places + place    
     else
       @occupy_places
     end
