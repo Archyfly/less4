@@ -297,13 +297,21 @@ class MainMenu
     }
   end
 
+  # def view_trains_on_station
+    #@stations.each { |station| 
+     # puts "On station #{station.station_name} train is:"
+     # station.trains_view(station)
+    #}
+  #end
   def view_trains_on_station
-    @stations.each { |station| 
-      puts "On station #{station.station_name} train is:"
-      station.trains_view(station)
-    }
+    @stations.each do |station|
+      puts "Station #{station} has: "
+      station.trains_view do |train|
+        puts "Train #{train.number} witn #{train.carriages_view}"
+      end
+    end
   end
-  
+
   def find_train_number(number_train) # вспомогательный метод, часто
     @trains.find { |train| train.number == number_train }
     #puts @trains.find { |train| train.number == number_train } 
