@@ -3,14 +3,12 @@ require_relative "./carriage.rb"
 
 class CargoCarriage < Carriage # грузовой вагон
 
-attr_reader :num, :free_places, :occupied_places
+attr_reader :num, :places, :occupied_places
 
-  def initialize(num, free_places)
+  def initialize(num, places)
     super
     @type_carriage = 'cargo'
-    @occupied_places = 0
-  end
-  
+    end  
 end
 
 =begin

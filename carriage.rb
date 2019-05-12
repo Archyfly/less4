@@ -3,16 +3,16 @@ require "./manufacturer.rb"
 
 class Carriage # класс вагон
 include Manufacturer
-attr_accessor :type_carriage, :num, :occupied_places
+attr_accessor :type_carriage, :num, :places, :occupied_places
   
-  def initialize(num, free_places)
+  def initialize(num, places)
     @num = num
-    @free_places = free_places # мест в вагоне
+    @places = places # мест в вагоне
     @occupied_places = 0 # занятые места
   end
   
   def occupy_places(places) # занять количество мест из free_places
-    @free_places = @free_places - places
+    @places = @places - places
     @occupied_places = @occupied_places + places
   end
   
@@ -22,9 +22,8 @@ attr_accessor :type_carriage, :num, :occupied_places
 
   def carriage_display_info
     puts "carriage type = #{@type_carriage}" # тип вагончика
-    puts "carriage places = #{@free_places}" # места (для пассажирского - одно значение, для грузового - другое значение)
-    puts "Free places after occupy  = #{@free_places}" # места (для пассажирского - одно значение, для грузового - другое значение)
-    
+    puts "carriage places = #{@places}" # места (для пассажирского - одно значение, для грузового - другое значение)
+    puts "Free places after occupy  = #{@places-@occupied_places}" # места (для пассажирского - одно значение, для грузового - другое значение)
   end
 
 end

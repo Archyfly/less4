@@ -69,17 +69,13 @@ class MainMenu
     ps1.carriage_add(carriage3)
     ps1.carriage_add(carriage4)
 
-    # заполняем вагончики грузом и людьми
-    #carriage1.volume = 20
-    #carriage2.volume = 30
-    #carriage3.places = 70
-    #carriage4.places = 50  
-    
     # создаем маршрут
     @routes << r1 = Route.new('fir', 'fif')
     r1.add_station_after('fir', 'sec')
     r1.add_station_after('sec', 'thr')
     r1.add_station_after('thr', 'fou')
+
+    puts "Test data created."
   end
 
   def find_train
@@ -303,12 +299,12 @@ class MainMenu
       puts "Train #{train.train_number(train)} has this carriages: " 
       if train.type == 'cargo' 
         train.each_carriage do |carriage|
-        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free volume #{carriage.free_places} and #{carriage.occupied_places} occupied volume  "
+        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free volume #{carriage.places} and #{carriage.occupied_places} occupied volume  "
         end
       end
       if train.type == 'pass' 
         train.each_carriage do |carriage|
-        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free places #{carriage.free_places} and #{carriage.occupied_places} occupied places  "
+        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free places #{carriage.places} and #{carriage.occupied_places} occupied places  "
         end
       end
     end
@@ -333,14 +329,14 @@ class MainMenu
     if selected_train.type == "cargo"
       puts "Enter volume to occupy carriage:"
         volume = gets.chomp.to_i
-        if volume > selected_carriage.free_places
-          puts "Volume so big for this carriage. Selected carriage has #{carriage.free_places} free volume "
+        if volume > selected_carriage.places  
+          puts "Volume so big for this carriage. Selected carriage has #{selected_carriage.places} free volume "
         else
           selected_carriage.occupy_places(volume)
         end
     end
     if selected_train.type == "pass"
-        if selected_carriage.occupied_places == selected_carriage.free_places
+        if selected_carriage.occupied_places == selected_carriage.places
           puts "Carriage full. Select another carriage"
         else
           selected_carriage.occupy_places(1)

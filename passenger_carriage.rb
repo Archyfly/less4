@@ -3,13 +3,12 @@ require "./carriage.rb"
 
 class PassengerCarriage < Carriage # пассажирский вагон - потомок класса вагон
 
-attr_reader :num, :free_places, :occupied_places
+attr_reader :num, :places, :occupied_places
 
-  def initialize(num, free_places)
+  def initialize(num, places)
     super
     @type_carriage = 'pass'
-    @occupied_places = 0
-  end
+    end
 
 end
 
