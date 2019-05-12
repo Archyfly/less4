@@ -3,39 +3,20 @@ require_relative "./carriage.rb"
 
 class CargoCarriage < Carriage # грузовой вагон
 
-attr_accessor :volume, :occupy_volume 
+attr_reader :num, :free_places, :occupied_places
 
-  def initialize
+  def initialize(num, free_places)
     super
     @type_carriage = 'cargo'
-    @volume = volume
-    @occupy_volume = 0
+    @occupied_places = 0
+  end
   
-  end
-
-  def change # вызываем приватный метод, позволяющий менять обьем (не пригодился)
-    change_volume! 
-  end
-
-  def occupy(vol) # занятие переданного обьема vol
-    if @occupy_volume + vol < @volume
-      @occupy_volume = @occupy_volume + vol   
-    else
-      puts "cargo carriage hasn't enough volume!"
-    end
-  end
-
-private
-
-  def change_volume!
-    @volume = 200 
-  end
-
 end
 
 =begin
-cargo1 = CargoCarriage.new
+cargo1 = CargoCarriage.new(1, 13)
 cargo1.carriage_display_info
-cargo1.change
+cargo1.occupy_places(2)
 cargo1.carriage_display_info
 =end
+

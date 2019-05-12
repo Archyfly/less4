@@ -2,39 +2,23 @@ require "./route.rb"
 require "./carriage.rb"
 
 class PassengerCarriage < Carriage # пассажирский вагон - потомок класса вагон
-  attr_reader :places
-  attr_accessor :occupy_places
-  def initialize
+
+attr_reader :num, :free_places, :occupied_places
+
+  def initialize(num, free_places)
     super
     @type_carriage = 'pass'
-    @places = places
-    @occupy_places = 0
-  end
-
-  def change # вызываем приватный метод, позволяющий менять число мест
-    change_places 
-  end
-
-  
-  def occupy(place)
-    if @occupy_places + place < @places
-      @occupy_places = @occupy_places + place    
-    else
-      @occupy_places
-    end
-  end
-
-private
-
-  def change_places # метод, изменяющий число мест в вагоне. Написан ранее, когда предполагалось поделить на купе, плацкарт и общий вагон.
-    @places = 72 
+    @occupied_places = 0
   end
 
 end
-#тест
-=begin
-vagon = PassengerCarriage.new
+
+
+
+=begin 
+
+vagon = PassengerCarriage.new(1, 65)
 vagon.carriage_display_info
-vagon.change
+vagon.occupy_places(1)
 vagon.carriage_display_info
 =end

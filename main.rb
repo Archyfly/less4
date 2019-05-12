@@ -19,6 +19,9 @@ class MainMenu
 
   attr_accessor :stations, :trains, :routes
 
+  @@num_cargo_carriage = 0
+  @@num_pass_carriage = 0 
+  
   def initialize
     @stations = []  # хранит обьекты станции @stations << station
     @trains = []    # хранит обьекты поезда @trains << new_train
@@ -26,7 +29,7 @@ class MainMenu
     @number_train
   end
 
-   def test_data # пункт 15 - создать тестовые данные
+  def test_data # пункт 15 - создать тестовые данные
     # создаем станции
     @stations << st1 = Station.new('fir')  
     @stations << st2 = Station.new('sec')
@@ -43,26 +46,34 @@ class MainMenu
     ps1.man_assign = 'PassMan'
    
     # создаем вагончики (2 для грузового поезда)
-    carriage1 = CargoCarriage.new
-    carriage2 = CargoCarriage.new
-    
+    @@num_cargo_carriage += 1
+    carriage1 = CargoCarriage.new(@@num_cargo_carriage, 250)
+    @@num_cargo_carriage += 1
+    carriage2 = CargoCarriage.new(@@num_cargo_carriage, 230)
+    carriage1.occupy_places(132)
+    carriage2.occupy_places(178)
     # добавляем вагончики поезду (груз)
     cr1.carriage_add(carriage1)
     cr1.carriage_add(carriage2)
     
     # создаем вагончики (2 для пассажирского поезда)  
-    carriage3 = PassengerCarriage.new
-    carriage4 = PassengerCarriage.new
+    @@num_pass_carriage += 1
+    carriage3 = PassengerCarriage.new(@@num_pass_carriage, 65)
+    @@num_pass_carriage += 1
+    carriage4 = PassengerCarriage.new(@@num_pass_carriage, 70)
+
+    carriage3.occupy_places(18)
+    carriage4.occupy_places(17)
     
     # добавляем вагончики поезду (пасс)
     ps1.carriage_add(carriage3)
     ps1.carriage_add(carriage4)
 
     # заполняем вагончики грузом и людьми
-    carriage1.volume = 20
-    carriage2.volume = 30
-    carriage3.places = 70
-    carriage4.places = 50  
+    #carriage1.volume = 20
+    #carriage2.volume = 30
+    #carriage3.places = 70
+    #carriage4.places = 50  
     
     # создаем маршрут
     @routes << r1 = Route.new('fir', 'fif')
@@ -256,16 +267,16 @@ class MainMenu
     elsif train.type == 'cargo'
       puts "Enter volume of carriage"
       vol = gets.chomp.to_i 
-      carriage = CargoCarriage.new
-      carriage.volume = vol
+      @@num_cargo_carriage = @@num_cargo_carriage + 1
+      carriage = CargoCarriage.new(@@num_cargo_carriage, vol)
+      #carriage.volume = vol
       train.carriage_add(carriage)
       puts "Train #{train.train_number(train)} has #{train.carriage_count} carriages"
     elsif train.type == 'pass'
       puts "Enter count of places in carriage"
-      count_places = gets.chomp.to_i 
-      carriage.places = count_places
-      train.carriage_add(carriage)
-      carriage = PassengerCarriage.new
+      place = gets.chomp.to_i 
+      @@num_pass_carriage = @@num_pass_carriage + 1
+      carriage = PassengerCarriage.new(@@num_pass_carriage, place)
       train.carriage_add(carriage)
       puts "Train #{train.train_number(train)} has #{train.carriage_count} carriages"
     else
@@ -289,19 +300,57 @@ class MainMenu
 
   def carriage_view_info
     @trains.each do |train| 
-    puts "Train #{train.train_number(train)} has this carriages: " 
-      train.carriages_view do |carriage|
-      puts "#{carriage.type_carriage}"
+      puts "Train #{train.train_number(train)} has this carriages: " 
+      if train.type == 'cargo' 
+        train.each_carriage do |carriage|
+        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free volume #{carriage.free_places} and #{carriage.occupied_places} occupied volume  "
+        end
+      end
+      if train.type == 'pass' 
+        train.each_carriage do |carriage|
+        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free places #{carriage.free_places} and #{carriage.occupied_places} occupied places  "
+        end
       end
     end
   end
 
-  # def view_trains_on_station
-    #@stations.each { |station| 
-     # puts "On station #{station.station_name} train is:"
-     # station.trains_view(station)
-    #}
-  #end
+  def carriage_occupy_places
+    carriage_view_info
+    puts "Select number of train to occupy volume/places in carriages:"
+    train = gets.chomp
+    selected_train = find_train_number(train)
+    puts "Select number of carriage to occupy volume/places in carriages:"
+    carriage_index = gets.chomp.to_i
+    selected_carriage = selected_train.carriages_in_train[carriage_index-1]
+    
+    #puts "train = #{train}"
+    puts "selected_train = #{selected_train}"
+    puts "selected_train.train_number = #{selected_train.train_number(train)}"
+    puts "selected_train.train_type = #{selected_train.type}"
+    
+    puts "selected_carriage = #{selected_carriage}"
+    
+    if selected_train.type == "cargo"
+      puts "Enter volume to occupy carriage:"
+        volume = gets.chomp.to_i
+        if volume > selected_carriage.free_places
+          puts "Volume so big for this carriage. Selected carriage has #{carriage.free_places} free volume "
+        else
+          selected_carriage.occupy_places(volume)
+        end
+    end
+    if selected_train.type == "pass"
+        if selected_carriage.occupied_places == selected_carriage.free_places
+          puts "Carriage full. Select another carriage"
+        else
+          selected_carriage.occupy_places(1)
+        end 
+    end 
+    #carriage.
+    #selected_train.carriages_in_train
+
+  end
+
   def view_trains_on_station
     @stations.each do |station|
       puts "Station #{station.station_name} has this trains: "
@@ -372,6 +421,9 @@ class MainMenu
           carriage_view_info
         when "13"
           view_trains_on_station
+        when "14"
+          carriage_occupy_places
+
         when "15"
           self.test_data
           

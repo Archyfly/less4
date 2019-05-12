@@ -95,8 +95,8 @@ class Train
     @carriages_in_train
   end
 
-  def carriages_view
-    @carriages_in_train.each { |carriage| yield(carriage) }# блок проходит по вагонам и смотрит тип и место в вагоне
+  def each_carriage
+    @carriages_in_train.each { |carriage| yield(carriage) } if block_given? # блок проходит по вагонам и смотрит тип и место в вагоне
   end
 
   def valid?
