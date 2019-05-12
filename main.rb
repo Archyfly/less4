@@ -390,6 +390,7 @@ class MainMenu
       puts "11 - find train by number " # Возвращает объект поезда по номеру или nil, если поезд с таким номером не найден.
       puts "12 - View carriages in trains"
       puts "13 - View trains on stations"
+      puts "14 - Occupy carriage"
       puts "15 - create test data - trains, carriages, stations and routes"
       puts "0 - EXIT"
       choice = gets.chomp
@@ -423,7 +424,6 @@ class MainMenu
           view_trains_on_station
         when "14"
           carriage_occupy_places
-
         when "15"
           self.test_data
           
