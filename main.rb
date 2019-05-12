@@ -299,12 +299,12 @@ class MainMenu
       puts "Train #{train.train_number(train)} has this carriages: " 
       if train.type == 'cargo' 
         train.each_carriage do |carriage|
-        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free volume #{carriage.places} and #{carriage.occupied_places} occupied volume  "
+        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has #{carriage.places} volume and #{carriage.occupied_places} occupied volume  "
         end
       end
       if train.type == 'pass' 
         train.each_carriage do |carriage|
-        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has free places #{carriage.places} and #{carriage.occupied_places} occupied places  "
+        puts "Carriage num: #{carriage.num}. Carriage type: #{carriage.type_carriage} carriage. Carriage has #{carriage.places} places and #{carriage.occupied_places} occupied places  "
         end
       end
     end
@@ -329,8 +329,8 @@ class MainMenu
     if selected_train.type == "cargo"
       puts "Enter volume to occupy carriage:"
         volume = gets.chomp.to_i
-        if volume > selected_carriage.places  
-          puts "Volume so big for this carriage. Selected carriage has #{selected_carriage.places} free volume "
+        if volume > selected_carriage.places - selected_carriage.occupied_places  
+          puts "Not enough free volume in this carriage. Selected carriage has #{selected_carriage.places - selected_carriage.occupied_places} free volume "
         else
           selected_carriage.occupy_places(volume)
         end

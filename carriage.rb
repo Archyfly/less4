@@ -12,7 +12,7 @@ attr_accessor :type_carriage, :num, :places, :occupied_places
   end
   
   def occupy_places(places) # занять количество мест из free_places
-    @places = @places - places
+    #@places = @places - places
     @occupied_places = @occupied_places + places
   end
   
