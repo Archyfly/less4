@@ -393,6 +393,8 @@ class MainMenu
       puts "14 - Occupy carriage"
       puts "15 - create test data - trains, carriages, stations and routes"
       puts "0 - EXIT"
+      puts "=========================================================="
+      
       choice = gets.chomp
       break if choice == "0"
       case choice
