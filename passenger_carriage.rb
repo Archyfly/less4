@@ -13,8 +13,7 @@ attr_reader :num, :places, :occupied_places
 end
 
 
-
-=begin 
+=begin
 
 vagon = PassengerCarriage.new(1, 65)
 vagon.carriage_display_info

@@ -320,17 +320,16 @@ class MainMenu
     selected_carriage = selected_train.carriages_in_train[carriage_index-1]
     
     #puts "train = #{train}"
-    puts "selected_train = #{selected_train}"
-    puts "selected_train.train_number = #{selected_train.train_number(train)}"
-    puts "selected_train.train_type = #{selected_train.type}"
-    
-    puts "selected_carriage = #{selected_carriage}"
+    #puts "selected_train = #{selected_train}"
+    #puts "selected_train.train_number = #{selected_train.train_number(train)}"
+    #puts "selected_train.train_type = #{selected_train.type}"
+    #puts "selected_carriage = #{selected_carriage}"
     
     if selected_train.type == "cargo"
       puts "Enter volume to occupy carriage:"
         volume = gets.chomp.to_i
         if volume > selected_carriage.places - selected_carriage.occupied_places  
-          puts "Not enough free volume in this carriage. Selected carriage has #{selected_carriage.places - selected_carriage.occupied_places} free volume "
+          puts "Not enough free volume in this carriage. Selected carriage has #{selected_carriage.free_places} free volume "
         else
           selected_carriage.occupy_places(volume)
         end
