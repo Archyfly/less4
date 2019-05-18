@@ -1,8 +1,8 @@
-require "./train.rb"
-class CargoTrain < Train # определяем потомка Грузовой поезд
-  
+require './train.rb'
+# define subclass cargo train
+class CargoTrain < Train
   attr_reader :type
-  
+
   def initialize(number)
     super
     @type = 'cargo'

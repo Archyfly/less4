@@ -1,16 +1,17 @@
 require './manufacturer.rb'
 require './instance_counter.rb'
 class Train
-  
   NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i
   TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/
 
   include Manufacturer
   include InstanceCounter
-  
-  @@existing_trains = {} # сюда записываем созданные экземпляры поездов
-  
-  attr_accessor :number, :carriage_count, :carriages_in_train, :speed, :train_type, :type_carriage
+  # write created trains
+  @@existing_trains = {}
+
+  attr_accessor :number, :carriage_count, :carriages_in_train,
+                :speed, :train_type, :type_carriage
+
   attr_reader :train_pos_now
 
   def self.find(number_train)
@@ -18,107 +19,88 @@ class Train
   end
 
   def initialize(number, speed = 0, train_pos_now = 'Depo')
-    @number = number # Номер поезда
-    @train_type = train_type # Тип поезда
+    @number = number
+    @train_type = train_type
     validate!
-    @speed = speed # Скорость поезда
-    @position = [] # для движения по маршруту
-    @train_pos_now = train_pos_now # хранение текущей позиции
-    @carriages_in_train = [] # массив получаемый из вагончиков
-    @carriage_count = 0 # более понятная переменная для числа вагончиков
-    @type_carriage = type_carriage # тип вагончика. 
-    @train_pos_now = train_pos_now # хранение текущей позиции
-    @@existing_trains[number] = self # отправка экземпляра
+    @speed = speed
+    @position = []
+    @train_pos_now = train_pos_now
+    @carriages_in_train = []
+    @carriage_count = 0
+    @type_carriage = type_carriage
+    @@existing_trains[number] = self
     register_instance
   end
- 
-  #def display_train_info# общие параметры отображения class Train 
-  #  puts "Train #{@number}. Type of train: #{@train_type}. Train has speed #{@speed}"
-  #end
 
-  def brake # общее торможение поезда
+  # train brake
+  def brake
     @speed = 0
-  #	puts "Train stopped!"
   end
 
-  def train_number(number)
+  def train_number(_number)
     @number
   end
 
-  def speed_up(speed_up) # общее набор скорости
-  	@speed += speed_up
+  def speed_up(speed_up)
+    @speed += speed_up
   end
 
-  def carriage_add(carriage) # получаем тип вагона и количество мест
-    if @speed != 0 
+  # add carriage to train
+  def carriage_add(carriage)
+    if @speed != 0
       puts "Carriage cannot be added! Speed = #{@speed}"
     else
-      @carriages_in_train << carriage # передаем в массив значения вагона тип => наполненость
-      @carriage_count += 1 
+      @carriages_in_train << carriage # create array of carriages
+      @carriage_count += 1
     end
   end
 
-  def position 
-    @position
-  end
-  
-  def carriage_del 
-    @carriage_count = @carriage_count - 1
-  end
-  
-  def train_on_route(number, station) # получаем маршрут - массив из route
-    station.each { |stat| @position << stat } # переписываем маршрут в position для дальнейшей работы
-    #puts "Train #{@number} arrived at #{@position[0]}"
-    self.brake
-    @train_pos_now = 0
-    #puts "position of train is #{ @position[@train_pos_now]}" # фиксируем точку маршрута
-    @position
-  end
-  
-  def train_go_to_next(number, station) #поезд перемещается на следующую станцию, выводим куда пеерместился.
-    @train_pos_now += 1
-    #puts "station: #{station}"
-    #self.position[train_pos_now]
-    #puts "@train_pos_now += 1 = #{ @train_pos_now}"
-    #puts "@position[train_pos_now] = #{@position[@train_pos_now]}"
-  end
-    
-  def train_go_to_previous(number, station) #поезд перемещается на предыдущую станцию, выводим куда пеерместился.
-    @train_pos_now -= 1
-    #puts "station: #{station}"
-    #self.position[train_pos_now]
-    #puts "@train_pos_now -= 1 = #{ @train_pos_now}"
-    #puts "@position[train_pos_now] = #{@position[@train_pos_now]}"
-  end
-  
-  def carriages_in_train # возвращает массив вагонов
-    @carriages_in_train
+  attr_reader :position
+
+  def carriage_del
+    @carriage_count -= 1
   end
 
+  def train_on_route(_number, station)
+    station.each { |stat| @position << stat } # send route to position for work
+    brake
+    @train_pos_now = 0
+    @position
+  end
+
+  def train_go_to_next(_number, _station)
+    @train_pos_now += 1
+    # puts "station: #{station}"
+    # self.position[train_pos_now]
+    # puts "@train_pos_now += 1 = #{ @train_pos_now}"
+    # puts "@position[train_pos_now] = #{@position[@train_pos_now]}"
+  end
+
+  def train_go_to_previous(_number, _station)
+    @train_pos_now -= 1
+    # puts "station: #{station}"
+    # self.position[train_pos_now]
+    # puts "@train_pos_now -= 1 = #{ @train_pos_now}"
+    # puts "@position[train_pos_now] = #{@position[@train_pos_now]}"
+  end
+
+  # view carriages from carrige_in_train
   def each_carriage
-    @carriages_in_train.each { |carriage| yield(carriage) } if block_given? # блок проходит по вагонам и смотрит тип и место в вагоне
+    @carriages_in_train.each { |carriage| yield(carriage) } if block_given?
   end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
-  
+
   protected
 
   def validate!
-      raise "Number can't be nil" if @number.nil?
-      raise "Number should be at least 6 symbols" if @number.to_s.size < 5 
-      raise "Number has invalid format" if @number !~ NUMBER_FORMAT
+    raise "Number can't be nil" if @number.nil?
+    raise 'Number should be at least 6 symbols' if @number.to_s.size < 5
+    raise 'Number has invalid format' if @number !~ NUMBER_FORMAT
     true
   end
 end
-
-
-
-#train1 = Train.new('122wwww')
-#Train.find(12)
-
-
-

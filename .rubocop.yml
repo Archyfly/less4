@@ -1,0 +1,49 @@
+Metrics/LineLength:
+  Max: 139
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 22
+
+Metrics/AbcSize:
+  Enabled: false
+
+Lint/UselessAccessModifier:
+  Exclude:
+    - 'instance_counter.rb'
+
+Metrics/PerceivedComplexity:
+  Max: 8
+
+Style/GuardClause:
+  Exclude:
+    - 'main.rb'
+
+Style/ClassVars:
+  Exclude:
+    - 'station.rb'
+    - 'train.rb'
+
+Metrics/ClassLength:
+  Exclude: 
+    - 'main.rb'
+
+Metrics/CyclomaticComplexity: 
+  Max: 16
+
+Lint/UselessAssignment:
+  Exclude: 
+    - 'main.rb'
+
+Lint/Void:
+  Exclude:
+    - 'station.rb'
+
+
+
+
+
+
+
