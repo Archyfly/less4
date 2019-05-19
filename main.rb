@@ -153,7 +153,9 @@ class MainMenu
   # case 3
   def create_route
     # view existing routes
-    @routes.each_with_index { |route_list, i| puts "Existing route #{i + 1} is #{route_list.display_route}" } unless @routes.empty?
+    @routes.each_with_index { |route_list, i| puts "Existing route #{i + 1} is #{route_list.display_route}" }
+    # unless @routes.empty?
+
     puts 'Enter start station of route: '
     start_station = gets.chomp
     puts 'Enter last station of route: '
@@ -169,7 +171,8 @@ class MainMenu
   # case 5
   def change_route
     if !@routes.empty?
-      @routes.each_with_index { |route_list, i| puts "Existing route #{i + 1} is #{route_list.display_route}" } unless @routes.empty?
+      @routes.each_with_index { |route_list, i| puts "Existing route #{i + 1} is #{route_list.display_route}" }
+      # unless @routes.empty?
       selected_route = select_route
       loop do
         puts ''
@@ -244,7 +247,9 @@ class MainMenu
       selected_train.train_go_to_next(number_train, selected_train.position)
     end
 
-    selected_train.train_go_to_previous(number_train, selected_train.position) if choice_move == 'prev' && selected_train.train_pos_now > 0
+    if choice_move == 'prev' && selected_train.train_pos_now > 0
+      selected_train.train_go_to_previous(number_train, selected_train.position)
+    end
 
     puts "Train #{selected_train.number} now on station #{selected_train.position[selected_train.train_pos_now]}"
     if selected_train.position[selected_train.train_pos_now + 1].nil?

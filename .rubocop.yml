@@ -1,11 +1,11 @@
 Metrics/LineLength:
-  Max: 139
+  Max: 120
 
 Style/Documentation:
   Enabled: false
 
 Metrics/MethodLength:
-  Max: 22
+  Max: 23
 
 Metrics/AbcSize:
   Enabled: false
@@ -40,10 +40,4 @@ Lint/UselessAssignment:
 Lint/Void:
   Exclude:
     - 'station.rb'
-
-
-
-
-
-
 
