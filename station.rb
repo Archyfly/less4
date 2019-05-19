@@ -55,6 +55,7 @@ class Station
 
   def validate!
     raise "Station name can't be nil" if station_name.to_s.size < 3
+
     true
   end
 end

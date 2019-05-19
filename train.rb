@@ -1,8 +1,8 @@
 require './manufacturer.rb'
 require './instance_counter.rb'
 class Train
-  NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i
-  TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/
+  NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i.freeze
+  TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/.freeze
 
   include Manufacturer
   include InstanceCounter
@@ -101,6 +101,7 @@ class Train
     raise "Number can't be nil" if @number.nil?
     raise 'Number should be at least 6 symbols' if @number.to_s.size < 5
     raise 'Number has invalid format' if @number !~ NUMBER_FORMAT
+
     true
   end
 end

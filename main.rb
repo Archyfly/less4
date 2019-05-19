@@ -182,6 +182,7 @@ class MainMenu
         puts "Type 'exit' for return to MainMenu"
         choice_route = gets.chomp
         break if choice_route == 'exit'
+
         case choice_route
         when 'add' then add_station_in_route
         when 'del' then del_station_in_route
@@ -312,6 +313,7 @@ class MainMenu
         end
       end
       next unless train.type == 'pass'
+
       train.each_carriage do |carriage|
         puts "Carriage num: #{carriage.num}."
         puts " Carriage has #{carriage.places} places and #{carriage.occupied_places} occupied places"
@@ -430,6 +432,7 @@ class MainMenu
       list
       choice = gets.chomp
       break if choice.nil?
+
       user(choice)
     end
   end

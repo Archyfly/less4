@@ -13,9 +13,9 @@ class Carriage
     @occupied_places = 0
   end
 
-  def occupy_places(n)
+  def occupy_places(occupy)
     # @places = @places - places
-    @occupied_places += n if @occupied_places + n <= @places
+    @occupied_places += occupy if @occupied_places + occupy <= @places
   end
 
   def free_places

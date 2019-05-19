@@ -1,6 +1,6 @@
 module Validate
-  NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i
-  TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/
+  NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i.freeze
+  TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/.freeze
 
   def valid_number(number)
     raise "Number can't be nil" if number.nil?
