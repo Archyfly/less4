@@ -5,11 +5,12 @@ module Validation
   def self.included(base)
     base.extend validate
     base.send :include, validate!, valid?
-  
-  def validate(attr, validate_type)
+  end
+
+  def validate(attrib, validate_type)
     choice = validate_type 
     case choice
-      when 'presence' then puts "its presence"
+      when 'presence' then valid_number(attrib)
       when 'format' then puts "its NUMBER_FORMAT"
       when 'type' then puts "its type, string"
     end      
@@ -19,6 +20,7 @@ module Validation
     raise "Number can't be nil" if number.nil?
     raise 'Number should be at least 6 symbols' if number.to_s.size < 5
     raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+    true
   end
 
   def valid_type(type)
