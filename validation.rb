@@ -10,12 +10,12 @@ module Validation
   module ClassValids 
   attr_reader validate_type
     
-    def validate(attrib, validate_type, *args)
+    def validate(attrib, validate_type)
     choice = validate_type 
     case choice
-      when 'presence' then valid_number(attrib)
-      when 'format' then validate_format(attrib, format)
-      when 'type' then puts "its type, string"
+      when 'presence' then valid_presence(attrib)
+      when 'format' then valid_format(attrib, valid_format)
+      when 'type' then valid_type(attrib, valid_type)
       end      
     end
 
