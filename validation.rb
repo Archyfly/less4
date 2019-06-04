@@ -3,33 +3,36 @@ module Validation
   TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/.freeze
 
   def self.included(base)
-    base.extend validate
-    base.send :include, validate!, valid?
+    base.extend ClassValids
+    base.send :include, InstanceValids
   end
 
-  def validate(attrib, validate_type)
+  module ClassValids 
+  attr_reader validate_type
+    
+    def validate(attrib, validate_type, *args)
     choice = validate_type 
     case choice
       when 'presence' then valid_number(attrib)
-      when 'format' then puts "its NUMBER_FORMAT"
+      when 'format' then validate_format(attrib, format)
       when 'type' then puts "its type, string"
-    end      
-  end
+      end      
+    end
 
-  def valid_number(number)
-    raise "Number can't be nil" if number.nil?
-    raise 'Number should be at least 6 symbols' if number.to_s.size < 5
-    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
-    true
-  end
+  module InstanceValids
 
-  def valid_type(type)
-    raise "Type of train is only 'pass' or 'cargo'" if type !~ TYPE_TRAIN_FORMAT
-  end
+    def valid_presence(attrib)
+      raise "Attribute #{attrib} cannot be nil" if attrib.nil? 
+      raise "Attribute #{attrib} cannot be empty" if value.strip.empty
+    end
 
-  def valid_station(station_name)
-    raise "Station name can't be nil" if station_name.size < 3
-  end
+    def valid_type(attrib, valid_type)
+      raise "Attribute #{attrib} is not #{valid_type}" unless attrib.is_a?(valid_type)
+    end
+
+    def valid_format(attrib, valid_format)
+      raise "Attribute #{attrib} is not #{valid_format}" if value !~ valid_format
+    end
 
   def valid?
     validate!
@@ -37,17 +40,8 @@ module Validation
     false
   end
 
-  protected
-
-  def validate!
-    raise "Number can't be nil" if @number.nil?
-    raise 'Number should be at least 6 symbols' if @number.to_s.size < 5
-    raise 'Number has invalid format' if @number !~ NUMBER_FORMAT
-    true
-  end
-
-
 end
+
 class Test
   extend Validation
 
