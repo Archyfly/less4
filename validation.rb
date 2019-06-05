@@ -11,8 +11,8 @@ module Validation
   attr_reader :validations
     
     def validate(attrib, validate_type, *args) # Этот метод принимает в качестве параметров имя проверяемого атрибута, а также тип валидации
-      @validations ||= {} # задаем хэш :переменная => аттрибуты 
-      @validations[attrib] ||= [] 
+      @validations ||= {} # задаем хэш :переменная => аттрибуты если еще нету пустой
+      @validations[attrib] ||= [] # значение может содержать опциональные аргументы
       @validations[attrib] << { validate_type: validate_type, args: args } # validate :name, :presence, доппараметры
     end
   end
@@ -21,23 +21,25 @@ module Validation
 
     def validate! #  инстанс-метод validate!, который запускает все проверки (валидации) из validate
       self.class.validations.each do |attrib, validations| 
-        attr_name = instance_variable_get("#{attrib}")
-        validations.each do |validation|
+        #attr_name = instance_variable_get("#{attrib}")
+        attr_name = instance_variable_get("@#{attrib}") # @ иначе не видим
+        
+        validations.each do |validation| # перебираем массив validations[attrib] и отправляем
           send( attr_name, validation[:validate_type], *validation[:args] ) #send(*args) public/ Invokes the method identified by symbol (attr), passing it any arguments specified.
         end
       end
     end
 
-    def valid_presence(attrib)
+    def valid_presence(attrib) # переименовать в просто presence
       raise "Attribute #{attrib} cannot be nil" if attrib.nil? 
       raise "Attribute #{attrib} cannot be empty" if value.strip.empty
     end
 
-    def valid_type(attrib, valid_type)
+    def valid_type(attrib, valid_type) #??? тоже переим
       raise "Attribute #{attrib} is not #{valid_type}" unless attrib.is_a?(valid_type)
     end
 
-    def valid_format(attrib, valid_format)
+    def valid_format(attrib, valid_format) #???? тоже переим
       raise "Attribute #{attrib} is not #{valid_format}" if value !~ valid_format
     end
 
