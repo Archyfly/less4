@@ -1,20 +1,22 @@
 # перепесываем по новой
 module Validation
-attr_accessor :valids
+attr_accessor :attr_name, :validation_typex
 
   # метод (класса) validate принимает имя переменной, тип проверки, опциональные аргументы
   def validate(attr_name, validation_type, *arguments)
-    @valids ||= []
-    @valids << [attr_name, validation_type, arguments]
-  p "valids = #{@valids}"
+    # @valids ||= []
+    # @valids << [attr_name: attr_name, validation_type: validation_type, arguments: arguments]
+    # p "valids = #{@valids}"
+  attrib = instance_variable_get("@#{attr_name}")
+  send(validation_type, attrib, *arguments)       
   end
 
   # метод (instance) validate! - запускает все проверки в validate - 
   # в случае ошибки выбрасывается исключение какая именно валидация не прошла
 
   def validate!
-    self.valids.each do |attr_name, validation_type|
-      p "attr_name = #{attr_name}, validation_type= #{validation_type}"
+    self.valids.each do |attr_name|
+      p "attr_name = #{attr_name}"
       attrib = instance_variable_get{"@#{attr_name}"}
       p "attrib= #{attrib}"
       end  
@@ -24,11 +26,12 @@ attr_accessor :valids
  
   def presence(attrib) # переименовать в просто presence
     raise "Attribute #{attrib} cannot be nil" if attrib.nil? 
-    raise "Attribute #{attrib} cannot be empty" if attrib.empty?
+    
   end
 
   def type(attrib, valid_type) #??? тоже переим и класс! 
     raise "Attribute #{attrib} is not #{valid_type}" unless attrib.is_a?(valid_type)
+
   end
 
   def format(attrib, valid_format) #???? тоже переим и формат
