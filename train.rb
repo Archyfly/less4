@@ -1,11 +1,14 @@
 require './manufacturer.rb'
 require './instance_counter.rb'
+require './validation.rb'
+
 class Train
   NUMBER_FORMAT = /^\w{3}\-?\w{2}$/i.freeze
   TYPE_TRAIN_FORMAT = /(?i)(\W|^)(pass|cargo)(\W|$)/.freeze
 
   include Manufacturer
   include InstanceCounter
+  include Validation
   # write created trains
   @@existing_trains = {}
 
@@ -13,6 +16,8 @@ class Train
                 :speed, :train_type, :type_carriage
 
   attr_reader :train_pos_now
+
+  validate :number, :format, NUMBER_FORMAT 
 
   def self.find(number_train)
     @@existing_trains[number_train]
@@ -89,19 +94,20 @@ class Train
     @carriages_in_train.each { |carriage| yield(carriage) } if block_given?
   end
 
-  def valid?
-    validate!
-  rescue StandardError
-    false
+  
+  #def valid?
+  #  validate!
+  #rescue StandardError
+  #  false
+  #end
+
+  #protected
+
+  #def validate!
+  #  raise "Number can't be nil" if @number.nil?
+  #  raise 'Number should be at least 6 symbols' if @number.to_s.size < 5
+  #  raise 'Number has invalid format' if @number !~ NUMBER_FORMAT
+
+  #  true
+  #end
   end
-
-  protected
-
-  def validate!
-    raise "Number can't be nil" if @number.nil?
-    raise 'Number should be at least 6 symbols' if @number.to_s.size < 5
-    raise 'Number has invalid format' if @number !~ NUMBER_FORMAT
-
-    true
-  end
-end

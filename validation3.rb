@@ -8,6 +8,7 @@ attr_accessor :attr_name, :validation_typex
     # @valids << [attr_name: attr_name, validation_type: validation_type, arguments: arguments]
     # p "valids = #{@valids}"
   attrib = instance_variable_get("@#{attr_name}")
+  # В СЕНД ИДЕТ СПЕРВА ИМЯ МЕТОДА! которому мы передаем параметры
   send(validation_type, attrib, *arguments)       
   end
 

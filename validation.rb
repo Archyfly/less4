@@ -26,7 +26,7 @@ module Validation
         
         validations.each do |validation| # перебираем массив аргументов validations[attrib] и отправляем методу
           # В СЕНД ИДЕТ СПЕРВА ИМЯ МЕТОДА! которому мы передаем параметры
-          send( validation[:validate_type], attr_name, *validation[:args] ) #send(*args) public/ Invokes the method identified by symbol (attr), 
+          send("validate_#{validation[:validate_type]}", attr_name, *validation[:args] ) #send(*args) public/ Invokes the method identified by symbol (attr), 
           # passing it any arguments specified.!!!!!!! m.validate :presence, :per1 
         end
       end
@@ -34,17 +34,17 @@ module Validation
     
     # выбираем проверки
     
-    def presence(attrib) # переименовать в просто presence
+    def validate_presence(attrib) # переименовать в просто presence
       raise "Attribute #{attrib} cannot be nil" if attrib.nil? 
       raise "Attribute #{attrib} cannot be empty" if attrib.empty?
     end
 
-    def type(attrib, valid_type) #??? тоже переим и класс! 
+    def validate_type(attrib, valid_type) #??? тоже переим и класс! 
       raise "Attribute #{attrib} is not #{valid_type}" unless attrib.is_a?(valid_type)
     end
 
-    def format(attrib, valid_format) #???? тоже переим и формат
-      raise "Attribute #{attrib} is not #{valid_format}" if attrib !~ valid_format
+    def validate_format(attrib, valid_format) #???? тоже переим и формат
+      raise "Attribute #{attrib} isn't has valid format: #{valid_format}" if attrib !~ valid_format
     end
 
     def valid?

@@ -1,11 +1,17 @@
 require './train.rb'
 require './cargo_train.rb'
 require './instance_counter'
+require './validation.rb'
 
 class Station
   @@existing_stations = []
-
+  include Validation
   include InstanceCounter
+
+  attr_reader :name
+
+  # test validation from module
+  validate :name, :presence 
 
   # class method all,  in main case 9
   def self.all
@@ -23,12 +29,12 @@ class Station
     @@existing_stations << self
   end
 
-  def validate?
-    validate!
-  rescue StandardError
-    false
-    retry
-  end
+  #def validate?
+  #  validate!
+  #rescue StandardError
+  #  false
+  #  retry
+  #end
 
   def station_name
     @name
@@ -51,11 +57,11 @@ class Station
     @train_on_station.each { |train| yield(train) } if block_given?
   end
 
-  protected
+  #protected
 
-  def validate!
-    raise "Station name can't be nil" if station_name.to_s.size < 3
+  #def validate!
+  #  raise "Station name can't be nil" if station_name.to_s.size < 3
 
-    true
-  end
+  # true
+  #end
 end
