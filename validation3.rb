@@ -1,18 +1,23 @@
 # перепесываем по новой
 module Validation
-attr_accessor :validations
+attr_accessor :valids
 
   # метод (класса) validate принимает имя переменной, тип проверки, опциональные аргументы
   def validate(attr_name, validation_type, *arguments)
-    @validations ||= []
-    @validations << {attr_name, validation_type, arguments}
+    @valids ||= []
+    @valids << [attr_name, validation_type, arguments]
+  p "valids = #{@valids}"
   end
 
   # метод (instance) validate! - запускает все проверки в validate - 
   # в случае ошибки выбрасывается исключение какая именно валидация не прошла
 
   def validate!
-  #validate  
+    self.valids.each do |attr_name, validation_type|
+      p "attr_name = #{attr_name}, validation_type= #{validation_type}"
+      attrib = instance_variable_get{"@#{attr_name}"}
+      p "attrib= #{attrib}"
+      end  
  
 
   end
