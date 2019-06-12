@@ -62,12 +62,14 @@ class ValidTest
 
 attr_accessor :per1, :per2, :per3
 validate :per1, :presence
+validate :per2, :type, Integer
+validate :per3, :format, /A-Z/
   
 end
 
 m = ValidTest.new
-m.per1 = 154
-m.type per1, Integer 
-m.type per1, String
-m.format per1, /A-Z/
+# m.per1 = 154
+# m.type :per1, Integer 
+# m.type :per1, String
+# m.format :per1, /A-Z/
 
