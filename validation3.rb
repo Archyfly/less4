@@ -1,9 +1,11 @@
 # перепесываем по новой
 module Validation
+attr_accessor :validations
 
   # метод (класса) validate принимает имя переменной, тип проверки, опциональные аргументы
   def validate(attr_name, validation_type, *arguments)
-
+    @validations ||= []
+    @validations << {attr_name, validation_type, arguments}
   end
 
   # метод (instance) validate! - запускает все проверки в validate - 
